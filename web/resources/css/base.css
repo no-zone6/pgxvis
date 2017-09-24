@@ -1,0 +1,83 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2017/09/22, 22:07:17
+    Author     : nonuma
+*/
+
+body{
+  margin:0;
+  padding:20px;
+  font:12px/17px Arial, sans-serif;
+  background:#f9f9f9;
+}
+
+.hd1{
+    
+}
+/***** header *****/
+#headertable{
+    border: 1;
+    border-color: #000
+}
+#company{
+    background: #1abc9c;
+}
+#factory{
+    background: #2ecc71;
+}
+#vehicle{
+    background: #3498db;
+}
+#parts{
+    background: #9b59b6;
+}
+.rootbutton{
+    margin: 1px;
+    padding: 20px 100px;
+    font: 18px/17px Arial, sans-serif;
+    
+}
+
+/*** Side bar ***/
+#sigmasetting{
+    width: 220px;
+    vertical-align: top;
+    padding-top: 50px;
+}
+
+.settinginput{
+    
+}
+
+#properties{
+    margin-top: 50px;
+    border-collapse: collapse;
+}
+#properties tr th{
+    padding:10px;
+    border: 1px solid #ccc;
+    background-color:#3498db;
+}
+#properties tr td{
+    padding:5px;
+    border: 1px solid #ccc;
+}
+
+.propheader{
+    background-color:#ddeeff
+}
+
+
+/***** Main *****/
+#displaytable{
+    width:100%;
+}
+
+#container{
+    width: 100%;
+    height: 700px;
+}
