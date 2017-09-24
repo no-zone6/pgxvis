@@ -21,7 +21,7 @@ import noz.pgx.beans.SigmaNodePropertyBean;
 import static noz.pgx.util.Logging.outputlog;
 /**
  *
- * @author nonuma
+ * @author Nozomu Onuma
  */
 public class GraphDAO {
     private final PgxGraph graph;
