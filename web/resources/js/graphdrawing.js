@@ -6,91 +6,8 @@
     sigma.utils.pkg('sigma.canvas.nodes');
 
     $(function(){
-        /*** URL設定 ***/
         var baseurl = "http://"+location.hostname+":"+location.port;
-        /*** PGX用設定ファイルの読み込み ***/
-        var graphsetting;
-        /*** 右クリック時にブラウザのコンテキストメニューが出ないようにする +***/
-        /*
-        if (document.addEventListener) {
-            document.addEventListener('contextmenu', function(e) {
-              //my custom functionality on right click
-                e.preventDefault();
-            }, false);
-        } else {
-            document.attachEvent('oncontextmenu', function() {
-                //my custom functionality on right click
-                window.event.returnValue = false;
-            });
-        };
-        */
-        /*** 右クリックメニューにイベントをバインド ***/
-        $('#addLowerNodes').click(function(e){
-            console.log(eventdata.node.label, eventdata.node.id)
-        });
-        $('#addAllNodes').click(function(e){
-            
-        });
-        $('#redrawGraph').click(function(e){
-            
-        });
-        /*** Sigmaインスタンス用変数 ***/
-        var graphins;
-        var eventdata;
-        
-        $('.rootbutton').click(function(){
-            /*** Propertyテーブルの初期化***/
-            createPropertiestable();
-            /*** Sigmaインスタンスの作成（ない場合）***/
-            if(typeof graphins === "undefined" || graphins ==null){
-                console.log("creat new Sigma Instance");
-                graphins =  new sigma({
-                    renderers:[
-                        {
-                            container: document.getElementById('container'),
-                            type: 'canvas'
-                        }
-                    ]
-                });
-                graphins.settings({
-                    defaultNodeColor: '#ec5148',
-                    sideMargin: 25,
-                    edgeColor:'target',
-                    defaultEdgeColor:'#080808',
-                    borderSize: 2
-                });      
-            /*** Sigmaインスタンスに対するイベント設定***/
-                graphins.bind('rightClickNode',rightClickNodeEvent);
-                graphins.bind('clickNode', clickNodeEvent);
-            }else{
-                console.log("Sigma Instance has been already created");
-            }
-            /*** サーバへの問い合わせ ***/            
-            var category = $(this).attr("id");
-            var graphdepth = $('#basedepth').val();
-            $.ajax({
-                type:"get",
-                url: baseurl + "/PgxRest/vehiclegraphs/graphs/sigma/base/" + category + "/" + graphdepth,
-                dataType: "json",
-                success : function(graphdata){
-                    
-            /*** sigmaインスタンスへのデータの登録 ***/
-                    graphins.graph.clear();
-                    graphins.graph.read(graphdata);
-            /*** sigmaインスタンスへのForceAtlas登録（ノード配置） ***/
-                    graphins.startForceAtlas2({
-                        gravity:10,
-                        scalingRatio:10,
-                        slowDown:10
-                    });
-                    setTimeout(function(){ graphins.stopForceAtlas2(); }, 10000);
-
-                    graphins.refresh();
-                }
-            });
-
-        })
-
+        /*** プロパティテーブルの作成機能 ***/
         function createPropertiestable(){            
             /*** PGXの設定ファイルを読み込み、参照可能なプロパティをリスト化し、テーブルへ登録 ***/
             $('#properties').empty();
@@ -103,7 +20,71 @@
                 }
             });            
         }
+        /*** ルートカテゴリボタンの作製機能+グラフインスタンス作製機能***/
+        function createRootCateboryButton(){
+            $('#caetgorytable').empty();
+            $.getJSON(baseurl + "/PgxRest/vehiclegraphs/graphs/pgx/category/", function(){                
+            }).done(function(json){
+                for(key in json){
+                    $('#categorytable').append("<td><button id=\"ctg" + key +"\" class=\"rootbutton\">"+json[key].toUpperCase()+"</button></td>");
+                }
+                /*** インスタンス作成のクリックイベント登録***/
+                $('.rootbutton').click(function(){
+                    /*** Propertyテーブルの初期化***/
+                    createPropertiestable();
+                    /*** Sigmaインスタンスの作成（ない場合）***/
+                    if(typeof graphins === "undefined" || graphins ==null){
+                        console.log("creat new Sigma Instance");
+                        graphins =  new sigma({
+                            renderers:[
+                                {
+                                    container: document.getElementById('container'),
+                                    type: 'canvas'
+                                }
+                            ]
+                        });
+                        graphins.settings({
+                            defaultNodeColor: '#ec5148',
+                            sideMargin: 25,
+                            edgeColor:'target',
+                            defaultEdgeColor:'#080808',
+                            borderSize: 2
+                        });      
+                    /*** Sigmaインスタンスに対するイベント設定***/
+                        graphins.bind('rightClickNode',rightClickNodeEvent);
+                        graphins.bind('clickNode', clickNodeEvent);
+                    }else{
+                        console.log("Sigma Instance has been already created");
+                    }
+                    /*** サーバへの問い合わせ ***/         
+                    var category = $(this).text().toLowerCase();
+                    var graphdepth = $('#basedepth').val();
+                    $.ajax({
+                        type:"get",
+                        url: baseurl + "/PgxRest/vehiclegraphs/graphs/sigma/base/" + category + "/" + graphdepth,
+                        dataType: "json",
+                        success : function(graphdata){
 
+                    /*** sigmaインスタンスへのデータの登録 ***/
+                            graphins.graph.clear();
+                            graphins.graph.read(graphdata);
+                    /*** sigmaインスタンスへのForceAtlas登録（ノード配置） ***/
+                            graphins.startForceAtlas2({
+                                gravity:10,
+                                scalingRatio:10,
+                                slowDown:10
+                            });
+                            setTimeout(function(){ graphins.stopForceAtlas2(); }, 10000);
+
+                            graphins.refresh();
+                        }
+                    });
+
+                });                
+            });
+            
+        }
+        
         function clickNodeEvent(e){
             /*** プロパティテーブルへプロパティを登録 ***/
             var nodeid = e.data.node.id;
@@ -140,5 +121,39 @@
                 $('#nodedialog, #mask').hide();
             })
         }    
+        
+        /**** 初期フロー ***/
+        /*** ルートボタンの設定 ***/
+        createRootCateboryButton();
+        /*** PGX用設定ファイルの読み込み ***/
+        var graphsetting;
+        /*** Sigmaインスタンス用変数 ***/
+        var graphins;
+        /*** ノードクリックイベント対応用関数 ***/
+        var eventdata;
+        /*** 右クリック時にブラウザのコンテキストメニューが出ないようにする +***/
+        /*
+        if (document.addEventListener) {
+            document.addEventListener('contextmenu', function(e) {
+              //my custom functionality on right click
+                e.preventDefault();
+            }, false);
+        } else {
+            document.attachEvent('oncontextmenu', function() {
+                //my custom functionality on right click
+                window.event.returnValue = false;
+            });
+        };
+        */
+        /*** 右クリックメニューにイベントをバインド ***/
+        $('#addLowerNodes').click(function(e){
+            console.log(eventdata.node.label, eventdata.node.id);
+        });
+        $('#addAllNodes').click(function(e){
+            
+        });
+        $('#redrawGraph').click(function(e){
+            
+        });
 
     })

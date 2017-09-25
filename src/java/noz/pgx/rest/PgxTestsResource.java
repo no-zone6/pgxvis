@@ -55,6 +55,13 @@ public class PgxTestsResource {
         //TODO return proper representation object
         return "{test:json}";
     }
+    
+    @GET
+    @Path("/pgx/category/")
+    @Produces("application/json;charset=UTF-8")
+    public String getRootCategory() throws Exception{
+        return gdao.getRootCategory();
+    }
 
     @GET
     @Path("/sigma/base/{category}/{graphdepth}/")

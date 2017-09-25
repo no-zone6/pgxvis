@@ -256,6 +256,27 @@ public class GraphDAO {
         return json;
     }
     
+    public String getRootCategory() throws Exception{
+        String json ="";
+        HashMap map = new HashMap();
+        List list = new ArrayList();
+        int i = 0;
+        try{
+            //ルートノードの取得
+            PgqlResultSet resultSet = graph.queryPgql("SELECT x.type WHERE (x),x.isroot = 1");
+            for(PgqlResult result : resultSet.getResults()){
+                list.add(i,result.getString(0));
+                map.put(i,result.getString(0) );
+                i++;
+            }
+            json = JSON.encode(map);
+        }catch(Exception e){
+            System.out.println(e);            
+        }
+        outputlog(json);
+        return json;
+    }
+    
     private List getSubGraphNodeList(List<SigmaNodePropertyBean> rootnodelist, int depth) throws Exception{        
         List<SigmaNodePropertyBean> list = new ArrayList();
         try{
@@ -308,20 +329,24 @@ public class GraphDAO {
     
   
     private String getColorHex(String type){
-        String colorhex = "#090909";
+        //要変更
+        String colorhex = "";
         
         switch (type) {
             case "company":
                 colorhex = "#1abc9c";
                 break;
-            case "factory":
+            case "vehicle":
                 colorhex = "#2ecc71";
                 break;
-            case "vehicle":
+            case "parts":
                 colorhex = "#3498db";
                 break;
-            default:
+            case "factory":
                 colorhex = "#9b59b6";
+                break;
+            default:
+                colorhex = "#8f8f8f";
                 break;
         }
         

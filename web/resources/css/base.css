@@ -23,16 +23,16 @@ body{
     border: 1;
     border-color: #000
 }
-#company{
+#ctg0{
     background: #1abc9c;
 }
-#factory{
+#ctg1{
     background: #2ecc71;
 }
-#vehicle{
+#ctg2{
     background: #3498db;
 }
-#parts{
+#ctg3{
     background: #9b59b6;
 }
 .rootbutton{
