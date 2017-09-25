@@ -35,6 +35,8 @@
             
         });        /*** Sigmaインスタンス用変数 ***/
         var graphins;
+        var eventdata;
+        
         $('.rootbutton').click(function(){
             /*** Propertyテーブルの初期化***/
             createPropertiestable();
@@ -115,6 +117,7 @@
 
         function rightClickNodeEvent(e){
             /*** （ToDO)子ノードの取得、とかしたい ***/
+            eventdata = e.data;
             var adddepth = Number($('#adddepth').val()) + 1;
             console.log(e.type, e.data.node.label, e.data.node.id, e.data.captor.clientX);
             /*** ダイアログ表示 ***/
@@ -122,9 +125,6 @@
             $('#addnodelabel').empty();
             $('#addnodeid').append(e.data.node.id);
             $('#addnodelabel').append(e.data.node.label);
-            $('#addSameCtgNodes').attr('href',e.data.node.id);
-            $('#addAllCtgNodes').attr('href',e.data.node.id);
-            $('#redrawGraph').attr('href',e.data.node.id);
             $("#nodedialog").css({
                 'left':e.data.captor.clientX,
                 'top':e.data.captor.clientY
