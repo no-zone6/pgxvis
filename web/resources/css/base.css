@@ -43,9 +43,15 @@ body{
 }
 .rootbutton{
     margin: 1px;
+    color: #555555;
     padding: 20px 100px;
     font: 18px/17px Arial, sans-serif;
-    
+    border:none;
+    transition-duration: 0.4s;
+}
+.rootbutton:hover{
+    opacity: 0.7;
+    color:#000;
 }
 
 /*** Side bar ***/

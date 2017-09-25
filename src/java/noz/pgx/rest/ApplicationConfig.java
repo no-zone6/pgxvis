@@ -12,7 +12,7 @@ import javax.ws.rs.core.Application;
  *
  * @author nonuma
  */
-@javax.ws.rs.ApplicationPath("vehiclegraphs")
+@javax.ws.rs.ApplicationPath("oraclepgx")
 public class ApplicationConfig extends Application {
 
     @Override

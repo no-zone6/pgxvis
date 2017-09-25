@@ -12,7 +12,7 @@
             /*** PGXの設定ファイルを読み込み、参照可能なプロパティをリスト化し、テーブルへ登録 ***/
             $('#properties').empty();
             $('#properties').append("<tr><th>プロパティ</th><th>値</th></tr>");
-            $.getJSON(baseurl + "/PgxRest/vehiclegraphs/graphs/pgx/setting/",function(){
+            $.getJSON(baseurl + "/PgxRest/oraclepgx/graphs/pgx/setting/",function(){
             }).done(function(json){
                 graphsetting = json;
                 for(var i in graphsetting.vertex_props){
@@ -23,7 +23,7 @@
         /*** ルートカテゴリボタンの作製機能+グラフインスタンス作製機能***/
         function createRootCateboryButton(){
             $('#caetgorytable').empty();
-            $.getJSON(baseurl + "/PgxRest/vehiclegraphs/graphs/pgx/category/", function(){                
+            $.getJSON(baseurl + "/PgxRest/oraclepgx/graphs/pgx/category/", function(){                
             }).done(function(json){
                 for(var key in json){
                     $('#categorytable').append("<td><button id=\"ctg" + key +"\" class=\"rootbutton\">"+json[key].toUpperCase()+"</button></td>");
@@ -61,7 +61,7 @@
                     var graphdepth = $('#basedepth').val();
                     $.ajax({
                         type:"get",
-                        url: baseurl + "/PgxRest/vehiclegraphs/graphs/sigma/base/" + category + "/" + graphdepth,
+                        url: baseurl + "/PgxRest/oraclepgx/graphs/sigma/base/" + category + "/" + graphdepth,
                         dataType: "json",
                         success : function(graphdata){
 
@@ -88,7 +88,7 @@
         function clickNodeEvent(e){
             /*** プロパティテーブルへプロパティを登録 ***/
             var nodeid = e.data.node.id;
-            $.getJSON(baseurl + "/PgxRest/vehiclegraphs/graphs/sigma/vertexinfo/"+nodeid, function(){
+            $.getJSON(baseurl + "/PgxRest/oraclepgx/graphs/sigma/vertexinfo/"+nodeid, function(){
             }).done(function(json){
                 for(var key in json){
                     $('#prop_'+key).empty();
