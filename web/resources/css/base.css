@@ -27,13 +27,19 @@ body{
     background: #1abc9c;
 }
 #ctg1{
-    background: #2ecc71;
-}
-#ctg2{
     background: #3498db;
 }
+#ctg2{
+    background: #f1c40f;
+}
 #ctg3{
-    background: #9b59b6;
+    background: #e67e22;
+}
+#ctg4{
+    background: #2ecc71;
+}
+#ctg5{
+    background: #e74c3c;
 }
 .rootbutton{
     margin: 1px;

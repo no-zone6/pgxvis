@@ -337,13 +337,13 @@ public class GraphDAO {
                 colorhex = "#1abc9c";
                 break;
             case "vehicle":
-                colorhex = "#2ecc71";
-                break;
-            case "parts":
                 colorhex = "#3498db";
                 break;
+            case "parts":
+                colorhex = "#f1c40f";
+                break;
             case "factory":
-                colorhex = "#9b59b6";
+                colorhex = "#e67e22";
                 break;
             default:
                 colorhex = "#8f8f8f";
