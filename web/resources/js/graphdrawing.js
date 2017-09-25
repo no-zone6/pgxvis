@@ -26,7 +26,7 @@
         */
         /*** 右クリックメニューにイベントをバインド ***/
         $('#addLowerNodes').click(function(e){
-            
+            console.log(eventdata.node.label, eventdata.node.id)
         });
         $('#addAllNodes').click(function(e){
             
