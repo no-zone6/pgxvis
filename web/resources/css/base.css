@@ -100,8 +100,8 @@ body{
     left:0;
     top:0;
     z-index:2;
-    width:222px;
-    height:153px;
+    width:262px;
+    height:154px;
     padding:0px;
     box-shadow:0 0 6px #000;
     border-radius: 5px;
@@ -113,7 +113,7 @@ ul {
 }
 li{
     background-color: #336699;
-    width:220px;
+    width:260px;
     height:25px;
     margin:1px;
 }

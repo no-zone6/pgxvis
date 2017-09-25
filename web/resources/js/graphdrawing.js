@@ -33,7 +33,8 @@
         });
         $('#redrawGraph').click(function(e){
             
-        });        /*** Sigmaインスタンス用変数 ***/
+        });
+        /*** Sigmaインスタンス用変数 ***/
         var graphins;
         var eventdata;
         
