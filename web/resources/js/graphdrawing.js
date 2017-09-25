@@ -10,7 +10,18 @@
         var baseurl = "http://"+location.hostname+":"+location.port;
         /*** PGX用設定ファイルの読み込み ***/
         var graphsetting;
-        
+        /*** 右クリック時にブラウザのコンテキストメニューが出ないようにする +***/
+        if (document.addEventListener) {
+            document.addEventListener('contextmenu', function(e) {
+              //my custom functionality on right click
+                e.preventDefault();
+            }, false);
+        } else {
+            document.attachEvent('oncontextmenu', function() {
+                //my custom functionality on right click
+                window.event.returnValue = false;
+            });
+        };
         /*** Sigmaインスタンス用変数 ***/
         var graphins;
         $('.rootbutton').click(function(){
@@ -95,13 +106,10 @@
             /*** （ToDO)子ノードの取得、とかしたい ***/
             /*** できれば、ダイアログウィンドウとか出した上で選択させる形がよい ***/
             var adddepth = Number($('#adddepth').val()) + 1;
-            console.log(e.type, e.data.node.label, e.data.node.id);
-            /*** ダイアログボックス設定 ***/
-            var windowW =$(window).width();
-            var windowH =$(window).height();
+            console.log(e.type, e.data.node.label, e.data.node.id, e.data.captor.clientX);
             $("#nodedialog").css({
-                'left':e.pageX,
-                'top':e.pageY
+                'left':e.data.captor.clientX,
+                'top':e.data.captor.clientY
             });
             $('#mask').fadeTo("slow",0.5);
             $('#nodedialog').fadeTo("slow",1);
