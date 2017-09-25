@@ -96,6 +96,19 @@
             /*** できれば、ダイアログウィンドウとか出した上で選択させる形がよい ***/
             var adddepth = Number($('#adddepth').val()) + 1;
             console.log(e.type, e.data.node.label, e.data.node.id);
+            /*** ダイアログボックス設定 ***/
+            var windowW =$(window).width();
+            var windowH =$(window).height();
+            $("#nodedialog").css({
+                'left':e.pageX,
+                'top':e.pageY
+            });
+            $('#mask').fadeTo("slow",0.5);
+            $('#nodedialog').fadeTo("slow",1);
+            
+            $('#close,#mask').click(function(){
+                $('#nodedialog, #mask').hide();
+            })
         }    
 
     })

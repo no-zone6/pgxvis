@@ -61,19 +61,15 @@ public class PgxTestsResource {
     @Produces("application/json;charset=UTF-8")
 //    @Produces(MediaType.APPLICATION_JSON)
     public String getSigmaBaseJson(@PathParam("category") String category, @PathParam("graphdepth") int graphdepth) throws Exception{
-        String json = "";
         Long rootnodeid = gdao.getGraphRootNodeId(category);
-        json = gdao.getGraphJsonForSigma(rootnodeid, graphdepth);
-        return json;
+        return gdao.getGraphJsonForSigma(rootnodeid, graphdepth);
     }
     @GET
-    @Path("/sigma/additional/{nodeid}")
+    @Path("/sigma/additional/{nodeid}/{additionaldepth}")
     @Produces("application/json;charset=UTF-8")
 //    @Produces(MediaType.APPLICATION_JSON)
-    public String getSigmaAdditionalJson(@PathParam("nodeid") Long nodeid) throws Exception{
-        String json = "";
-        json = gdao.getAdditionalGraphJsonForSigma(nodeid, additionaldepth);
-        return json;
+    public String getSigmaAdditionalJson(@PathParam("nodeid") Long nodeid, @PathParam("additionaldepth") int additionaldepth) throws Exception{
+        return gdao.getAdditionalGraphJsonForSigma(nodeid, additionaldepth);
     }
     @GET
     @Path("/sigma/vertexinfo/{nodeid}")
