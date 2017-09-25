@@ -25,10 +25,10 @@
         };
         */
         /*** 右クリックメニューにイベントをバインド ***/
-        $('#addSameCtgNodes').click(function(e){
+        $('#addLowerNodes').click(function(e){
             
         });
-        $('#addAllCtgNodes').click(function(e){
+        $('#addAllNodes').click(function(e){
             
         });
         $('#redrawGraph').click(function(e){

@@ -33,30 +33,33 @@ and open the template in the editor.
         <table id="displaytable">
             <tr>
                 <td id="sigmasetting">
+        <!-- グラフ設定 --->
                     <div>
                         <label for="basedepth">初期グラフの深さ</label>
                         <input type="text" id="basedepth" class="settinginput" value="3"><br>
                         <label for="adddepth">追加グラフの深さ</label>
                         <input type="text" id="adddepth"  class="settinginput" value="1">
                     </div>
+        <!-- プロパティ表示領域 --->
                     <table id="properties">
                     </table>
                 </td>
+        <!-- グラフ描画領域 --->
                 <td>
                     <div id="container"></div>
                 </td>
             </tr>
         </table>
+        <!-- ダイアログボックス --->
         <div id="nodedialog">
             <h3><span id="addnodeid"></span>:<span id="addnodelabel"></span></h3>
             <ul>
-                <li><a id="addSameCtgNodes" href="#">同一カテゴリのノードを取得</a></li>
-                <li><a id="addAllCtgNodes" href="#">異なるカテゴリのノードを取得</a></li>
+                <li><a id="addLowerNodes" href="#">下位階層のノードを取得</a></li>
+                <li><a id="addAllNodes" href="#">下位・上位階層のノードを取得</a></li>
                 <li><a id="redrawGraph" href="#">このノードを中心にグラフを再描画</a></li>
                 <li><a id="close" href="#">キャンセル</a></li>
             </ul>
         </div>
         <div id="mask"></div>
-        <div id="container"></div>
     </body>
 </html>
