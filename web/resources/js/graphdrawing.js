@@ -25,7 +25,7 @@
             $('#caetgorytable').empty();
             $.getJSON(baseurl + "/PgxRest/vehiclegraphs/graphs/pgx/category/", function(){                
             }).done(function(json){
-                for(key in json){
+                for(var key in json){
                     $('#categorytable').append("<td><button id=\"ctg" + key +"\" class=\"rootbutton\">"+json[key].toUpperCase()+"</button></td>");
                 }
                 /*** インスタンス作成のクリックイベント登録***/
@@ -35,7 +35,7 @@
                     /*** Sigmaインスタンスの作成（ない場合）***/
                     if(typeof graphins === "undefined" || graphins ==null){
                         console.log("creat new Sigma Instance");
-                        graphins =  new sigma({
+                        graphins = new sigma({
                             renderers:[
                                 {
                                     container: document.getElementById('container'),
@@ -90,7 +90,7 @@
             var nodeid = e.data.node.id;
             $.getJSON(baseurl + "/PgxRest/vehiclegraphs/graphs/sigma/vertexinfo/"+nodeid, function(){
             }).done(function(json){
-                for(key in json){
+                for(var key in json){
                     $('#prop_'+key).empty();
                     $('#prop_'+key).append(json[key]);
                 }

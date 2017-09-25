@@ -329,7 +329,7 @@ public class GraphDAO {
     
   
     private String getColorHex(String type){
-        //要変更
+        //汎用化するためには変更が必要
         String colorhex = "";
         
         switch (type) {
