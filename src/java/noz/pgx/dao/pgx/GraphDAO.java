@@ -19,6 +19,7 @@ import noz.pgx.beans.PgxProps;
 import noz.pgx.beans.SigmaEdgePropertyBean;
 import noz.pgx.beans.SigmaNodePropertyBean;
 import static noz.pgx.util.Logging.outputlog;
+
 /**
  *
  * @author Nozomu Onuma
@@ -26,6 +27,7 @@ import static noz.pgx.util.Logging.outputlog;
 public class GraphDAO {
     private final PgxGraph graph;
     private final PgxProps ppro;
+    private HashMap ctgmap;
     
     public GraphDAO(String pgxserver) throws Exception{
         outputlog(":GraphDAO has been constructed.");
@@ -36,6 +38,21 @@ public class GraphDAO {
         
         graph = session.readGraphWithProperties(config);
         ppro = JSON.decode(new FileReader("C:\\Users\\nonuma\\PgxRest\\web\\resources\\vehiclegraph.json"),PgxProps.class);
+        //カテゴリ初期設定
+        HashMap map = new HashMap();
+        Integer i = 0;
+        try{
+            //ルートノードの取得
+            PgqlResultSet resultSet = graph.queryPgql("SELECT x.type WHERE (x),x.isroot = 1");
+            for(PgqlResult result : resultSet.getResults()){
+                map.put(i,result.getString(0) );
+                i++;
+            }
+        }catch(Exception e){
+            System.out.println(e);            
+        }
+        this.ctgmap = map;
+        
     }
     
     public Long getGraphRootNodeId(String graphtype){
@@ -256,24 +273,9 @@ public class GraphDAO {
         return json;
     }
     
-    public String getRootCategory() throws Exception{
-        String json ="";
-        HashMap map = new HashMap();
-        List list = new ArrayList();
-        int i = 0;
-        try{
-            //ルートノードの取得
-            PgqlResultSet resultSet = graph.queryPgql("SELECT x.type WHERE (x),x.isroot = 1");
-            for(PgqlResult result : resultSet.getResults()){
-                list.add(i,result.getString(0));
-                map.put(i,result.getString(0) );
-                i++;
-            }
-            json = JSON.encode(map);
-        }catch(Exception e){
-            System.out.println(e);            
-        }
-        outputlog(json);
+    public String getRootCategories() throws Exception{
+        String json ="";        
+        json = JSON.encode(this.ctgmap);
         return json;
     }
     
@@ -329,25 +331,21 @@ public class GraphDAO {
     
   
     private String getColorHex(String type){
-        //汎用化するためには変更が必要
-        String colorhex = "";
-        
-        switch (type) {
-            case "company":
-                colorhex = "#1abc9c";
-                break;
-            case "vehicle":
-                colorhex = "#3498db";
-                break;
-            case "parts":
-                colorhex = "#f1c40f";
-                break;
-            case "factory":
-                colorhex = "#e67e22";
-                break;
-            default:
+        String colorhex = "#8f8f8f";
+        if(type.equals(ctgmap.get(0))){
+                colorhex = "#1abc9c";            
+        }else if(type.equals(ctgmap.get(1))){
+                colorhex = "#3498db";            
+        }else if(type.equals(ctgmap.get(2))){
+                colorhex = "#f1c40f";            
+        }else if(type.equals(ctgmap.get(3))){
+                colorhex = "#e67e22";            
+        }else if(type.equals(ctgmap.get(4))){
+                colorhex = "#2ecc71";            
+        }else if(type.equals(ctgmap.get(5))){
+                colorhex = "#e74c3c";            
+        }else {
                 colorhex = "#8f8f8f";
-                break;
         }
         
         return colorhex;

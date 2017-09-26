@@ -28,7 +28,7 @@
                 for(var key in json){
                     $('#categorytable').append("<td><button id=\"ctg" + key +"\" class=\"rootbutton\">"+json[key].toUpperCase()+"</button></td>");
                 }
-                /*** インスタンス作成のクリックイベント登録***/
+                /*** インスタンス作成のクリックイベント登録 カテゴリ取得後じゃないと、うまくイベント登録できない***/
                 $('.rootbutton').click(function(){
                     /*** Propertyテーブルの初期化***/
                     createPropertiestable();
@@ -79,7 +79,6 @@
                             graphins.refresh();
                         }
                     });
-
                 });                
             });
             

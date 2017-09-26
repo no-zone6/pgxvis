@@ -60,7 +60,7 @@ public class PgxTestsResource {
     @Path("/pgx/category/")
     @Produces("application/json;charset=UTF-8")
     public String getRootCategory() throws Exception{
-        return gdao.getRootCategory();
+        return gdao.getRootCategories();
     }
 
     @GET
@@ -71,6 +71,7 @@ public class PgxTestsResource {
         Long rootnodeid = gdao.getGraphRootNodeId(category);
         return gdao.getGraphJsonForSigma(rootnodeid, graphdepth);
     }
+    
     @GET
     @Path("/sigma/additional/{nodeid}/{additionaldepth}")
     @Produces("application/json;charset=UTF-8")
@@ -78,6 +79,7 @@ public class PgxTestsResource {
     public String getSigmaAdditionalJson(@PathParam("nodeid") Long nodeid, @PathParam("additionaldepth") int additionaldepth) throws Exception{
         return gdao.getAdditionalGraphJsonForSigma(nodeid, additionaldepth);
     }
+    
     @GET
     @Path("/sigma/vertexinfo/{nodeid}")
     @Produces("application/json;charset=UTF-8")
