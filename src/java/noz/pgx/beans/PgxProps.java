@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 Nozomu Onuma
+
+ * Project Name    : PgxRest
+ * File Name       : PgxProps.java
+ * Encoding        : UTF-8
+ * Creation Date   : 2017/09/26
+
+ * This source code or any portion thereof must not be
+ * reproduced or used in any manner whatsoever.
  */
 package noz.pgx.beans;
 

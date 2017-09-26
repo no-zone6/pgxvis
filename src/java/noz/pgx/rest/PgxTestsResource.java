@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 Nozomu Onuma
+
+ * Project Name    : PgxRest
+ * File Name       : PgxTestsResource.java
+ * Encoding        : UTF-8
+ * Creation Date   : 2017/09/26
+
+ * This source code or any portion thereof must not be
+ * reproduced or used in any manner whatsoever.
  */
 package noz.pgx.rest;
 
@@ -36,13 +42,18 @@ public class PgxTestsResource {
     private PgxProps ppro;
     private int graphdepth = 3;
     private int additionaldepth = 2;
+    //環境に合わせて設定
+    //PGX接続用JSON設定ファイル
+    private String jsonfilepath = "C:\\Users\\nonuma\\PgxRest\\web\\resources\\pgxsetting.json";
+    //PGXサーバのURL
+    private String PgxUrl = "http://192.168.56.122:7007";
 
     /**
      * Creates a new instance of PgxTestsResource
      */
     public PgxTestsResource() throws Exception{
-        gdao = new GraphDAO("http://192.168.56.122:7007");
-        ppro = JSON.decode(new FileReader("C:\\Users\\nonuma\\PgxRest\\web\\resources\\vehiclegraph.json"),PgxProps.class);
+        gdao = new GraphDAO(PgxUrl,jsonfilepath);
+        ppro = JSON.decode(new FileReader(jsonfilepath),PgxProps.class);
     }
 
     /**
@@ -97,7 +108,6 @@ public class PgxTestsResource {
         Map vertex_props;
         Map edge_props;
         try{
-//            PgxProps prop = JSON.decode(new FileReader("C:\\Users\\nonuma\\PgxRest\\web\\resources\\vehiclegraph.json"),PgxProps.class);
             vertex_props = this.ppro.getVertex_props();
             json = "{\"vertex_props\":[";
             for(int i = 0 ; i < vertex_props.size() ; i++){

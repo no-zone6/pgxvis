@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 Nozomu Onuma
+
+ * Project Name    : PgxRest
+ * File Name       : GraphDAO.java
+ * Encoding        : UTF-8
+ * Creation Date   : 2017/09/26
+
+ * This source code or any portion thereof must not be
+ * reproduced or used in any manner whatsoever.
  */
 package noz.pgx.dao.pgx;
 
@@ -29,15 +35,15 @@ public class GraphDAO {
     private final PgxProps ppro;
     private HashMap ctgmap;
     
-    public GraphDAO(String pgxserver) throws Exception{
+    public GraphDAO(String pgxserver, String jsonfilepath) throws Exception{
         outputlog(":GraphDAO has been constructed.");
         
         ServerInstance instance = Pgx.getInstance(pgxserver);
         PgxSession session = instance.createSession("my-session");
-        GraphConfig config = GraphConfigFactory.forAnyFormat().fromPath("C:\\Users\\nonuma\\PgxRest\\web\\resources\\vehiclegraph.json");
+        GraphConfig config = GraphConfigFactory.forAnyFormat().fromPath(jsonfilepath);
         
         graph = session.readGraphWithProperties(config);
-        ppro = JSON.decode(new FileReader("C:\\Users\\nonuma\\PgxRest\\web\\resources\\vehiclegraph.json"),PgxProps.class);
+        ppro = JSON.decode(new FileReader(jsonfilepath),PgxProps.class);
         //カテゴリ初期設定
         HashMap map = new HashMap();
         Integer i = 0;
