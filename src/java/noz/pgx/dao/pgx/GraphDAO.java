@@ -37,7 +37,8 @@ public class GraphDAO {
     
     public GraphDAO(String pgxserver, String jsonfilepath) throws Exception{
         outputlog(":GraphDAO has been constructed.");
-        
+        outputlog(pgxserver);
+        outputlog(jsonfilepath);
         ServerInstance instance = Pgx.getInstance(pgxserver);
         PgxSession session = instance.createSession("my-session");
         GraphConfig config = GraphConfigFactory.forAnyFormat().fromPath(jsonfilepath);
@@ -58,7 +59,7 @@ public class GraphDAO {
             System.out.println(e);            
         }
         this.ctgmap = map;
-        
+        //クローズ処理をどこで書けばいいかなやみどころ。
     }
     
     public Long getGraphRootNodeId(String graphtype){
@@ -150,12 +151,7 @@ public class GraphDAO {
         
         //JSONへの変換
         json = JSON.encode(map);
-        //JSONを念のためファイルで出力
-/*        File file = new File("C:\\Users\\nonuma\\Documents\\NetBeansProjects\\JavaApplication2\\sigmalog.txt");
-        PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-        pw.println(json);
-        pw.close();
-*/            
+
         return json;
     }
     
@@ -230,12 +226,7 @@ public class GraphDAO {
         
         //JSONへの変換
         json = JSON.encode(map);
-        //JSONを念のためファイルで出力
-/*        File file = new File("C:\\Users\\nonuma\\Documents\\NetBeansProjects\\JavaApplication2\\sigmalog.txt");
-        PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-        pw.println(json);
-        pw.close();
-*/            
+
         return json;
     }
     

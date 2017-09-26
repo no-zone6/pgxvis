@@ -16,7 +16,7 @@ import javax.ws.rs.core.Application;
 
 /**
  *
- * @author nonuma
+ * @author Nozomu Onuma
  */
 @javax.ws.rs.ApplicationPath("oraclepgx")
 public class ApplicationConfig extends Application {
@@ -35,7 +35,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(noz.pgx.rest.PgxTestsResource.class);
+        resources.add(noz.pgx.rest.PgxRestResource.class);
     }
     
 }

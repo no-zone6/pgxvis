@@ -11,9 +11,13 @@
  */
 package noz.pgx.rest;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -27,6 +31,7 @@ import javax.ws.rs.core.Response;
 import net.arnx.jsonic.JSON;
 import noz.pgx.beans.PgxProps;
 import noz.pgx.dao.pgx.GraphDAO;
+import static noz.pgx.util.Logging.outputlog;
 
 /**
  * REST Web Service
@@ -34,7 +39,7 @@ import noz.pgx.dao.pgx.GraphDAO;
  * @author Nozomu Onuma
  */
 @Path("/graphs")
-public class PgxTestsResource {
+public class PgxRestResource {
 
     @Context
     private UriInfo context;
@@ -46,13 +51,26 @@ public class PgxTestsResource {
     //PGX接続用JSON設定ファイル
     private String jsonfilepath = "C:\\Users\\nonuma\\PgxRest\\web\\resources\\pgxsetting.json";
     //PGXサーバのURL
-    private String PgxUrl = "http://192.168.56.122:7007";
-
+    private String pgxurl = "http://192.168.56.122:7007";
     /**
      * Creates a new instance of PgxTestsResource
      */
-    public PgxTestsResource() throws Exception{
-        gdao = new GraphDAO(PgxUrl,jsonfilepath);
+    public PgxRestResource() throws Exception{
+        /*
+        外部からプロパティを読みたいが、これをやるとおかしくなる。。。
+        Properties properties = new Properties();
+        try{
+            InputStream is = new FileInputStream("..\\..\\PgxRest\\web\\WEB-INF\\classes\\pgxrest.properties");
+            properties.load(is);
+            is.close();
+            
+            this.pgxurl = properties.getProperty("pgxurl");
+            this.jsonfilepath = properties.getProperty("pgxjson");
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        */      
+        gdao = new GraphDAO(pgxurl,jsonfilepath);
         ppro = JSON.decode(new FileReader(jsonfilepath),PgxProps.class);
     }
 
@@ -146,11 +164,4 @@ public class PgxTestsResource {
         return Response.created(context.getAbsolutePath()).build();
     }
 
-    /**
-     * Sub-resource locator method for {id}
-     */
-    @Path("{id}")
-    public PgxTestResource getPgxTestResource(@PathParam("id") String id) {
-        return PgxTestResource.getInstance(id);
-    }
 }

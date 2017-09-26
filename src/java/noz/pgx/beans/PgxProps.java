@@ -14,7 +14,7 @@ package noz.pgx.beans;
 import java.util.Map;
 /**
  *
- * @author nonuma
+ * @author Nozomu Onuma
  */
 public class PgxProps {
     String db_engine;

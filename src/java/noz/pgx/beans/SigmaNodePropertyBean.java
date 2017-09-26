@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /**
  *
- * @author nonuma
+ * @author Nozomu Onuma
  */
 public class SigmaNodePropertyBean {
     private Long id;

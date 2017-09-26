@@ -15,7 +15,7 @@ import java.util.Date;
 
 /**
  *
- * @author nonuma
+ * @author Nozomu Onuma
  */
 public class Logging {
     public static void outputlog (String memo){
