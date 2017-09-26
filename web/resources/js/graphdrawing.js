@@ -105,7 +105,6 @@
         function rightClickNodeEvent(e){
             /*** （ToDO)子ノードの取得、とかしたい ***/
             eventdata = e.data;
-            var adddepth = Number($('#adddepth').val()) + 1;
             console.log(e.type, e.data.node.label, e.data.node.id, e.data.captor.clientX);
             /*** ダイアログ表示 ***/
             $('#addnodeid').empty();
@@ -123,7 +122,6 @@
             
             /***  ダイアログのクローズ ***/
             $('#close,#mask').click(function(){
-                $('#nodedialog, #mask').hide();
             })
         }    
         
@@ -153,11 +151,14 @@
         /*** 右クリックメニューにイベントをバインド ***/
         $('#addLowerNodes').click(function(e){
             console.log(eventdata.node.label, eventdata.node.id);
+                $('#nodedialog, #mask').hide();
         });
         $('#addAllNodes').click(function(e){
+                $('#nodedialog, #mask').hide();
             
         });
         $('#redrawGraph').click(function(e){
+                $('#nodedialog, #mask').hide();
             
         });
 
