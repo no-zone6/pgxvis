@@ -31,7 +31,7 @@ import noz.pgx.dao.pgx.GraphDAO;
 /**
  * REST Web Service
  *
- * @author nonuma
+ * @author Nozomu Onuma
  */
 @Path("/graphs")
 public class PgxTestsResource {
