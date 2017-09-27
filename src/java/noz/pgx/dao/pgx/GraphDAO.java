@@ -11,7 +11,11 @@
  */
 package noz.pgx.dao.pgx;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -148,10 +152,15 @@ public class GraphDAO {
         }catch(Exception e){
             System.out.println(e);            
         }
-        
         //JSONへの変換
         json = JSON.encode(map);
-
+        /* 
+        //JSON内容確認用ファイル出力
+        File file = new File("D:\\test\\output.json");
+        PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+        pw.print(json);
+        pw.close();
+        */
         return json;
     }
     
@@ -226,7 +235,13 @@ public class GraphDAO {
         
         //JSONへの変換
         json = JSON.encode(map);
-
+        
+        //JSON内容確認用ファイル出力
+        File file = new File("D:\\test\\output_add.json");
+        PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+        pw.print(json);
+        pw.close();
+        
         return json;
     }
     

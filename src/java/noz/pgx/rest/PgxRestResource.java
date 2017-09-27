@@ -110,6 +110,13 @@ public class PgxRestResource {
     }
     
     @GET
+    @Path("/sigma/redraw/{nodeid}/{graphdepth}")
+    @Produces("application/json;charset=UTF-8")
+    public String getSigmaJsonRedraw(@PathParam("nodeid") Long nodeid, @PathParam("graphdepth") int graphdepth) throws Exception{
+        return gdao.getGraphJsonForSigma(nodeid, graphdepth);
+    }
+    
+    @GET
     @Path("/sigma/vertexinfo/{nodeid}")
     @Produces("application/json;charset=UTF-8")
     public String getVertexInfo(@PathParam("nodeid") Long nodeid) throws Exception{

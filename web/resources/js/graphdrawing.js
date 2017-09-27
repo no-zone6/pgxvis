@@ -126,6 +126,7 @@
             
             /***  ダイアログのクローズ ***/
             $('#close,#mask').click(function(){
+                $('#nodedialog, #mask').hide();                
             })
         }    
         
@@ -154,16 +155,78 @@
         */
         /*** 右クリックメニューにイベントをバインド ***/
         $('#addLowerNodes').click(function(e){
-            console.log(eventdata.node.label, eventdata.node.id);
-                $('#nodedialog, #mask').hide();
+            $('#nodedialog, #mask').hide();
+            //自分を含まずに１っこ先のグラフノード ＝　自分を含めた深さにするため1を足す
+            var graphdepth = Number($('#adddepth').val()) + 1;
+            $.ajax({
+                type:"get",
+                url:baseurl + "/PgxRest/oraclepgx/graphs/sigma/additional/" + eventdata.node.id + "/" + graphdepth,
+                dataType: "json",
+                success : function(graphdata){
+                    //ノードデータの追加
+                    for(var i in graphdata.nodes){
+                        if(!(graphins.graph.nodes(graphdata.nodes[i].id))){
+                            console.log("add node " + graphdata.nodes[i].label + " to graphinstance");
+                            graphins.graph.addNode({
+                                id:graphdata.nodes[i].id,
+                                label:graphdata.nodes[i].label,
+                                x:Number(graphdata.nodes[i].x) + Number(eventdata.captor.clientX),
+                                y:Number(graphdata.nodes[i].y) + Number(eventdata.captor.clientY),
+                                size:graphdata.nodes[i].size,
+                                color:graphdata.nodes[i].color
+                            });
+                        }else{
+                            console.log("Node ID:" + graphdata.nodes[i].id + " has already existed. ");
+                        }
+                    }
+                    //エッジデータの追加
+                    for(var k in graphdata.edges){
+                        if(!(graphins.graph.edges(graphdata.edges[k].id))){
+                            console.log("add edge " + graphdata.edges[k].id + " to graphinstance");
+                            graphins.graph.addEdge({
+                                id:graphdata.edges[k].id,
+                                source:graphdata.edges[k].source,
+                                target:graphdata.edges[k].target
+                            })
+                        }else{
+                            console.log("Edge ID:" + graphdata.edges[k].id + " has already existed. ");
+                        }
+                    }
+                    graphins.refresh();
+                }
+            })
         });
         $('#addAllNodes').click(function(e){
                 $('#nodedialog, #mask').hide();
             
         });
         $('#redrawGraph').click(function(e){
-                $('#nodedialog, #mask').hide();
-            
+            $('#nodedialog, #mask').hide();
+            $('#container').css('display','none');
+            $('#load_container, #load_circle,#load_comment').css('display','block');
+            var graphdepth = $('#basedepth').val();
+            $.ajax({
+                type:"get",
+                url: baseurl + "/PgxRest/oraclepgx/graphs/sigma/redraw/" + eventdata.node.id + "/" + graphdepth,
+                dataType: "json",
+                success : function(graphdata){
+
+            /*** sigmaインスタンスへのデータの登録 ***/
+                    graphins.graph.clear();
+                    graphins.graph.read(graphdata);
+            /*** sigmaインスタンスへのForceAtlas登録（ノード配置） ***/
+                    graphins.startForceAtlas2({
+                        gravity:10,
+                        scalingRatio:10,
+                        slowDown:10
+                    });
+                    setTimeout(function(){ graphins.stopForceAtlas2(); }, 10000);
+
+                    graphins.refresh();
+                    $('#load_container, #load_circle, #load_comment').css('display','none');
+                    $('#container').css('display','block');
+                }
+            });            
         });
 
     })
