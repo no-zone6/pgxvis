@@ -29,13 +29,15 @@
         /*** ルートカテゴリボタンの作製機能+グラフインスタンス作製機能***/
         function createRootCateboryButton(){
             $('#caetgorytable').empty();
-            $.getJSON(baseurl + "/PgxRest/oraclepgx/graphs/pgx/category/", function(){                
-            }).done(function(json){
+            $.getJSON(baseurl + "/PgxRest/oraclepgx/graphs/pgx/category/", function(){
+            }).done(function(json){                
                 for(var key in json){
                     $('#categorytable').append("<td><button id=\"ctg" + key +"\" class=\"rootbutton\">"+json[key].toUpperCase()+"</button></td>");
                 }
                 /*** インスタンス作成のクリックイベント登録 カテゴリ取得後じゃないと、うまくイベント登録できない***/
                 $('.rootbutton').click(function(){
+                    $('#container').css('display','none');
+                    $('#load_container, #load_circle,#load_comment').css('display','block');
                     /*** Propertyテーブルの初期化***/
                     createPropertiestable();
                     /*** Sigmaインスタンスの作成（ない場合）***/
@@ -83,6 +85,8 @@
                             setTimeout(function(){ graphins.stopForceAtlas2(); }, 10000);
 
                             graphins.refresh();
+                            $('#load_container, #load_circle, #load_comment').css('display','none');
+                            $('#container').css('display','block');
                         }
                     });
                 });                
