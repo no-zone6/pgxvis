@@ -35,6 +35,7 @@ import static noz.pgx.util.Logging.outputlog;
  * @author Nozomu Onuma
  */
 public class GraphDAO {
+    private PgxSession gsession;
     private final PgxGraph graph;
     private final PgxProps ppro;
     private HashMap ctgmap;
@@ -44,10 +45,10 @@ public class GraphDAO {
         outputlog(pgxserver);
         outputlog(jsonfilepath);
         ServerInstance instance = Pgx.getInstance(pgxserver);
-        PgxSession session = instance.createSession("my-session");
+        gsession = instance.createSession("my-session");
         GraphConfig config = GraphConfigFactory.forAnyFormat().fromPath(jsonfilepath);
         
-        graph = session.readGraphWithProperties(config);
+        graph = gsession.readGraphWithProperties(config);
         ppro = JSON.decode(new FileReader(jsonfilepath),PgxProps.class);
         //カテゴリ初期設定
         HashMap map = new HashMap();
@@ -154,13 +155,13 @@ public class GraphDAO {
         }
         //JSONへの変換
         json = JSON.encode(map);
-        /* 
+       
         //JSON内容確認用ファイル出力
         File file = new File("D:\\test\\output.json");
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
         pw.print(json);
         pw.close();
-        */
+        
         return json;
     }
     
@@ -245,6 +246,86 @@ public class GraphDAO {
         return json;
     }
     
+    public String getBothDirectionsGraphJsonForSigmma(Long rootnodeid, int depth) throws Exception{
+        String json = ""; 
+        //Sigma似合わせたJSON出力用HashMap
+        HashMap map = new HashMap<String,List>();
+        //ループ処理用リストの雛形
+        List[] rooplist = new ArrayList[depth];
+        //ルートノード用リスト
+        List rootlist = new ArrayList();
+        
+        try{            
+            //ノード情報の取得
+            List nodelist = new ArrayList();            
+            //重複排除
+            Set<SigmaNodePropertyBean> constset_n = new HashSet<>();
+            //ルートノードの取得
+            PgqlResultSet resultSet = graph.queryPgql("SELECT x.id(), x.name, x.type WHERE (x), x.id() = " + rootnodeid );
+            int x = 0;
+            int y = 0;
+            int size = 2;
+            String color = "";
+            for(PgqlResult result : resultSet.getResults()){
+                SigmaNodePropertyBean node = new SigmaNodePropertyBean();
+                node.setId(result.getLong(0));
+                node.setLabel(result.getString(1));
+                node.setX(x);
+                node.setY(y);
+                node.setSize(size);
+                node.setColor(color);
+                rootlist.add(node);
+                outputlog(":Graph Root Node Class has " + node.getId());
+            }
+            int i = 0;
+//            nodelist.addAll(rootlist);
+            rooplist[i] = rootlist;
+            while(i < depth - 1){
+                List sublist = new ArrayList();
+                outputlog(":call the Graph Sub Node List for Depth No." + i);
+                sublist = this.getBothDirectionsSubGraphNodeList(rooplist[i], i+1);
+                i++;
+                rooplist[i] = sublist;
+                nodelist.addAll(sublist);
+            }
+            constset_n.addAll(nodelist);
+            nodelist.clear();
+            nodelist.addAll(constset_n);
+            map.put("nodes",nodelist);
+            
+            //エッジリストの作成
+            List edgelist = new ArrayList();     
+            //重複排除
+            Set<SigmaEdgePropertyBean> constset_e = new HashSet<SigmaEdgePropertyBean>();
+            int k = 0;
+            while(k < depth -1){
+                List sublist = new ArrayList();
+                outputlog(":call the Graph Edge List for Depth No." +k);
+                sublist = this.getBothDirectionsSubGraphEdgeList(rooplist[k]);
+                k++;
+                edgelist.addAll(sublist);
+            }
+            constset_e.addAll(edgelist);
+            edgelist.clear();
+            edgelist.addAll(constset_e);
+            map.put("edges",edgelist);
+                
+        }catch(Exception e){
+            System.out.println(e);            
+        }
+        
+        //JSONへの変換
+        json = JSON.encode(map);
+        
+        //JSON内容確認用ファイル出力
+        File file = new File("D:\\test\\output_add.json");
+        PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+        pw.print(json);
+        pw.close();
+
+        return json;
+    }
+    
     public String getNodeProperties(Long nodeid) throws Exception{
         String json ="{";
         String pgqlstr = "SELECT";
@@ -321,12 +402,54 @@ public class GraphDAO {
         return list;
     }
 
+    private List getBothDirectionsSubGraphNodeList(List<SigmaNodePropertyBean> rootnodelist, int depth){      
+        List<SigmaNodePropertyBean> list = new ArrayList();
+        try{
+            for(SigmaNodePropertyBean rootnode : rootnodelist){
+                //ノード取得
+                outputlog(":additional Sub graph execution. base node id is " + rootnode.getId());
+                PgqlResultSet resultSet_c = graph.queryPgql("SELECT y.id(), y.name, y.type WHERE (x)-[]->(y), x.id() = " + rootnode.getId() );
+                int x = 1;
+                int y = depth;
+                int size = 2;
+                
+                for(PgqlResult result : resultSet_c.getResults()){
+                    x++;
+                    SigmaNodePropertyBean node = new SigmaNodePropertyBean();
+                    node.setId(result.getLong(0));
+                    node.setLabel(result.getString(1));
+                    node.setX(x);
+                    node.setY(y);
+                    node.setSize(size);
+                    node.setColor(this.getColorHex(result.getString(2)));
+                    list.add(node);
+                }
+                PgqlResultSet resultSet_p = graph.queryPgql("SELECT y.id(), y.name, y.type WHERE (x)<-[]-(y), x.id() = " + rootnode.getId() );
+                for(PgqlResult result : resultSet_p.getResults()){
+                    x++;
+                    SigmaNodePropertyBean node = new SigmaNodePropertyBean();
+                    node.setId(result.getLong(0));
+                    node.setLabel(result.getString(1));
+                    node.setX(x);
+                    node.setY(y);
+                    node.setSize(size);
+                    node.setColor(this.getColorHex(result.getString(2)));
+                    list.add(node);
+                }
+
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }        
+        return list;
+    }
+    
     private List getSubGraphEdgeList(List<SigmaNodePropertyBean> rootnodelist){
         List<SigmaEdgePropertyBean> list = new ArrayList();
         try{
             for(SigmaNodePropertyBean node : rootnodelist){
-                PgqlResultSet resultEdgeSet = graph.queryPgql("SELECT x.id(), e.id(), y.id() WHERE (x)-[e]->(y), y.isroot != 1,x.id() = " + node.getId());
-                for(PgqlResult edgeResult : resultEdgeSet.getResults()){
+                PgqlResultSet resultEdgeSet_c = graph.queryPgql("SELECT x.id(), e.id(), y.id() WHERE (x)-[e]->(y), y.isroot != 1,x.id() = " + node.getId());
+                for(PgqlResult edgeResult : resultEdgeSet_c.getResults()){
                     SigmaEdgePropertyBean edge = new SigmaEdgePropertyBean();
                     edge.setId(edgeResult.getLong(1));
                     edge.setSource(edgeResult.getLong(0));
@@ -341,7 +464,34 @@ public class GraphDAO {
         return list;
     }
     
-  
+    private List getBothDirectionsSubGraphEdgeList(List<SigmaNodePropertyBean> rootnodelist){
+    List<SigmaEdgePropertyBean> list = new ArrayList();
+        try{
+            for(SigmaNodePropertyBean node : rootnodelist){
+                PgqlResultSet resultEdgeSet_c = graph.queryPgql("SELECT x.id(), e.id(), y.id() WHERE (x)-[e]->(y), x.id() = " + node.getId());
+                for(PgqlResult edgeResult : resultEdgeSet_c.getResults()){
+                    SigmaEdgePropertyBean edge = new SigmaEdgePropertyBean();
+                    edge.setId(edgeResult.getLong(1));
+                    edge.setSource(edgeResult.getLong(0));
+                    edge.setTarget(edgeResult.getLong(2));
+                    list.add(edge);                
+                }
+                PgqlResultSet resultEdgeSet_p = graph.queryPgql("SELECT x.id(), e.id(), y.id() WHERE (x)<-[e]-(y), x.id() = " + node.getId());
+                for(PgqlResult edgeResult : resultEdgeSet_p.getResults()){
+                    SigmaEdgePropertyBean edge = new SigmaEdgePropertyBean();
+                    edge.setId(edgeResult.getLong(1));
+                    edge.setSource(edgeResult.getLong(0));
+                    edge.setTarget(edgeResult.getLong(2));
+                    list.add(edge);                
+                }
+            }           
+            
+        }catch(Exception e){
+            System.out.println(e);
+        }        
+        return list;
+    }
+    
     private String getColorHex(String type){
         String colorhex = "#8f8f8f";
         if(type.equals(ctgmap.get(0))){
@@ -362,4 +512,21 @@ public class GraphDAO {
         
         return colorhex;
     }    
+    @Override
+    protected void finalize() throws Throwable {
+        try {
+          super.finalize();
+        } finally {
+          destruction();
+        }
+    }
+
+    private void destruction() {
+        try{
+            this.graph.destroy();
+            this.gsession.destroy();
+        }catch(Exception e){
+              System.out.println(e);
+        }
+    }
 }

@@ -108,6 +108,15 @@ public class PgxRestResource {
     public String getSigmaAdditionalJson(@PathParam("nodeid") Long nodeid, @PathParam("additionaldepth") int additionaldepth) throws Exception{
         return gdao.getAdditionalGraphJsonForSigma(nodeid, additionaldepth);
     }
+
+    @GET
+    @Path("/sigma/bothdirect/{nodeid}/{additionaldepth}")
+    @Produces("application/json;charset=UTF-8")
+//    @Produces(MediaType.APPLICATION_JSON)
+    public String getSigmaBothDirectAdditionalJson(@PathParam("nodeid") Long nodeid, @PathParam("additionaldepth") int additionaldepth) throws Exception{
+        return gdao.getBothDirectionsGraphJsonForSigmma(nodeid, additionaldepth);
+    }
+    
     
     @GET
     @Path("/sigma/redraw/{nodeid}/{graphdepth}")

@@ -166,6 +166,7 @@
                     //ノードデータの追加
                     for(var i in graphdata.nodes){
                         if(!(graphins.graph.nodes(graphdata.nodes[i].id))){
+                            //ノードIDの存在判定ロジックがおかしい
                             console.log("add node " + graphdata.nodes[i].label + " to graphinstance");
                             graphins.graph.addNode({
                                 id:graphdata.nodes[i].id,
@@ -176,8 +177,51 @@
                                 size:graphdata.nodes[i].size,
                                 color:graphdata.nodes[i].color
                             });
-                                console.log("Client X:" + eventdata.captor.clientX + " screen X:" +  screenX + " offset X:" +eventdata.captor.screenX );
-                                console.log(eventdata.captor.clientY, eventdata.captor.scerenY,eventdata.captor.pageY );
+                        }else{
+                            console.log("Node ID:" + graphdata.nodes[i].id + " has already existed. ");
+                        }
+                    }
+                    //エッジデータの追加
+                    for(var k in graphdata.edges){
+                        if(!(graphins.graph.edges(graphdata.edges[k].id))){
+                            //エッジIDの存在判定ロジックがおかしい
+                            console.log("add edge " + graphdata.edges[k].id + " to graphinstance");
+                            graphins.graph.addEdge({
+                                id:graphdata.edges[k].id,
+                                source:graphdata.edges[k].source,
+                                target:graphdata.edges[k].target
+                            })
+                        }else{
+                            console.log("Edge ID:" + graphdata.edges[k].id + " has already existed. ");
+                        }
+                    }
+                    graphins.startForceAtlas2();
+                    graphins.refresh();
+                }
+            })
+        });
+        $('#addAllNodes').click(function(e){
+            $('#nodedialog, #mask').hide();
+            //自分を含まずに１っこ先のグラフノード ＝　自分を含めた深さにするため1を足す
+            var graphdepth = Number($('#adddepth').val()) + 1;
+            $.ajax({
+                type:"get",
+                url:baseurl + "/PgxRest/oraclepgx/graphs/sigma/bothdirect/" + eventdata.node.id + "/" + graphdepth,
+                dataType: "json",
+                success : function(graphdata){
+                    //ノードデータの追加
+                    for(var i in graphdata.nodes){
+                        if(!(graphins.graph.nodes(graphdata.nodes[i].id))){
+                            console.log("add node " + graphdata.nodes[i].label + " to graphinstance");
+                            graphins.graph.addNode({
+                                id:graphdata.nodes[i].id,
+                                label:graphdata.nodes[i].label,
+                                //位置決めが課題
+                                x:Number(graphdata.nodes[i].x),
+                                y:Number(graphdata.nodes[i].y),
+                                size:graphdata.nodes[i].size,
+                                color:graphdata.nodes[i].color
+                            });
                         }else{
                             console.log("Node ID:" + graphdata.nodes[i].id + " has already existed. ");
                         }
@@ -199,9 +243,6 @@
                     graphins.refresh();
                 }
             })
-        });
-        $('#addAllNodes').click(function(e){
-                $('#nodedialog, #mask').hide();
             
         });
         $('#redrawGraph').click(function(e){
@@ -232,5 +273,4 @@
                 }
             });            
         });
-
     })
