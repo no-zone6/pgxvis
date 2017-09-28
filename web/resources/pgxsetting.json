@@ -1,0 +1,29 @@
+{
+ "db_engine":"RDBMS",
+ "jdbc_url":"jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=127.0.0.1)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=orcl)))",
+ "username":"opg",
+ "password":"oracle",
+ "max_num_connections":8,
+ "error_handling":{},
+ "format":"pg",
+ "name":"vehiclegraph",
+ "vertex_props":[
+	{"name":"name","type":"string"},
+	{"name":"type","type":"string"},
+	{"name":"isroot","type":"integer"},
+	{"name":"model_name","type":"string"},
+	{"name":"vehicle_eng_name","type":"string"},
+	{"name":"engine_model","type":"string"},
+	{"name":"transmission_model","type":"string"},
+	{"name":"motor_model","type":"string"},	
+	{"name":"JC08","type":"float"},
+	{"name":"version","type":"integer"},
+	{"name":"vehicle_weight","type":"float"},
+	{"name":"fuel_tank_capacity","type":"integer"}
+	],
+ "edge_props":[
+ 	{"name":"weight","type":"integer","default":"1"},
+ 	{"name":"version","type":"integer","default":"1"}
+ 	],
+ "loading":{"load_edge_label":true}
+}

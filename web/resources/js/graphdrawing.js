@@ -171,12 +171,12 @@
                                 id:graphdata.nodes[i].id,
                                 label:graphdata.nodes[i].label,
                                 //位置決めが課題
-                                x:Number(graphdata.nodes[i].x) + Number(eventdata.captor.clientX),
-                                y:Number(graphdata.nodes[i].y) + Number(eventdata.captor.clientY),
+                                x:Number(graphdata.nodes[i].x),
+                                y:Number(graphdata.nodes[i].y),
                                 size:graphdata.nodes[i].size,
                                 color:graphdata.nodes[i].color
                             });
-                                console.log(eventdata.captor.clientX, eventdata.captor.scerenX,eventdata.captor.pageX );
+                                console.log("Client X:" + eventdata.captor.clientX + " screen X:" +  screenX + " offset X:" +eventdata.captor.screenX );
                                 console.log(eventdata.captor.clientY, eventdata.captor.scerenY,eventdata.captor.pageY );
                         }else{
                             console.log("Node ID:" + graphdata.nodes[i].id + " has already existed. ");
@@ -195,6 +195,7 @@
                             console.log("Edge ID:" + graphdata.edges[k].id + " has already existed. ");
                         }
                     }
+                    graphins.startForceAtlas2();
                     graphins.refresh();
                 }
             })
