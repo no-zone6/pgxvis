@@ -22,21 +22,21 @@ last update 2017/9/27
 　　・PGXアクセス用設定JSONファイルを、「pgxsetting.json」のファイル名で作製し、web/resourcesフォルダに配置する
 
 ２．利用方法 
-
+    
 　2-1. 今のところの確実な利用方法  
 
-　　・PGXをサーバモードで起動  　
-　　・netbeans上のプロジェクトに、Githubから本リポジトリのクローンを作製  　
-　　・webページ/resourcesフォルダにpgxsetting.jsonファイルを配置  　
-　　・PgxRestResource.java内のメンバ変数「pgxurl」にPGXサーバのURLを記述  　
-　　・プロジェクトを実行   
-　
-　
+　　・PGXをサーバモードで起動    
+　　・netbeans上のプロジェクトに、Githubから本リポジトリのクローンを作製    
+　　・webページ/resourcesフォルダにpgxsetting.jsonファイルを配置    
+　　・PgxRestResource.java内のメンバ変数「pgxurl」にPGXサーバのURLを記述    
+　　・プロジェクトを実行    
+    
+    
 
-３．ToDo 　　
+３．ToDo     
 
-　・もうちょっと簡単なインストール方法の実現 　　
-　・PGXサーバURLの設定のプロパティファイル化 　　
-　・右クリック機能の拡充 　　
-　・Log4J対応 　　
+　・もうちょっと簡単なインストール方法の実現    
+　・PGXサーバURLの設定のプロパティファイル化    
+　・右クリック機能の拡充    
+　・Log4J対応    
 　・その他動作上不都合がある部分の解消
