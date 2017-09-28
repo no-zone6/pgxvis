@@ -140,7 +140,6 @@
         /*** ノードクリックイベント対応用関数 ***/
         var eventdata;
         /*** 右クリック時にブラウザのコンテキストメニューが出ないようにする +***/
-        /*
         if (document.addEventListener) {
             document.addEventListener('contextmenu', function(e) {
               //my custom functionality on right click
@@ -152,7 +151,7 @@
                 window.event.returnValue = false;
             });
         };
-        */
+        
         /*** 右クリックメニューにイベントをバインド ***/
         $('#addLowerNodes').click(function(e){
             $('#nodedialog, #mask').hide();
