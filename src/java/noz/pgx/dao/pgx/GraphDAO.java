@@ -515,6 +515,7 @@ public class GraphDAO {
     @Override
     protected void finalize() throws Throwable {
         try {
+          outputlog("GraphDAO class has been destructed");
           super.finalize();
         } finally {
           destruction();

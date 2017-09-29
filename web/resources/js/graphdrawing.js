@@ -17,7 +17,7 @@
         function createPropertiestable(){            
             /*** PGXの設定ファイルを読み込み、参照可能なプロパティをリスト化し、テーブルへ登録 ***/
             $('#properties').empty();
-            $('#properties').append("<tr><th>プロパティ</th><th>値</th></tr>");
+            $('#properties').append("<tr><th>Property</th><th>Value</th></tr>");
             $.getJSON(baseurl + "/PgxRest/oraclepgx/graphs/pgx/setting/",function(){
             }).done(function(json){
                 graphsetting = json;
@@ -120,9 +120,7 @@
                 'top':e.data.captor.clientY
             });
             $('#mask').fadeTo("slow",0.5);
-            $('#nodedialog').fadeTo("slow",1);
-            
-            
+            $('#nodedialog').fadeTo("slow",1);           
             
             /***  ダイアログのクローズ ***/
             $('#close,#mask').click(function(){
@@ -140,6 +138,7 @@
         /*** ノードクリックイベント対応用関数 ***/
         var eventdata;
         /*** 右クリック時にブラウザのコンテキストメニューが出ないようにする +***/
+        /*
         if (document.addEventListener) {
             document.addEventListener('contextmenu', function(e) {
               //my custom functionality on right click
@@ -151,7 +150,7 @@
                 window.event.returnValue = false;
             });
         };
-        
+        */
         /*** 右クリックメニューにイベントをバインド ***/
         $('#addLowerNodes').click(function(e){
             $('#nodedialog, #mask').hide();
@@ -271,5 +270,10 @@
                     $('#container').css('display','block');
                 }
             });            
+        });
+        $('#removeNode').click(function(e){
+            graphins.graph.dropNode(eventdata.node.id);
+            graphins.refresh();
+            $('#nodedialog, #mask').hide();    
         });
     })
