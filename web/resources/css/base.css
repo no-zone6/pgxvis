@@ -22,6 +22,12 @@ body{
     font:28px Arial, sans-serif;
 }
 /***** header *****/
+#header{
+    display:block;
+    height: 12px;
+    width: 100%;
+    background-color: #bdc3c7;
+}
 #headertable{
     border: 1;
     border-color: #000
@@ -47,7 +53,7 @@ body{
 .rootbutton{
     margin: 1px;
     color: #555555;
-    padding: 20px 100px;
+    padding: 20px 90px;
     font: 18px/17px Arial, sans-serif;
     border:none;
     transition-duration: 0.4s;
@@ -64,6 +70,10 @@ body{
     padding-top: 50px;
 }
 
+label {
+  font:13px Arial, sans-serif;
+}
+
 .settinginput{
     
 }
@@ -76,6 +86,7 @@ body{
     padding:10px;
     border: 1px solid #ccc;
     background-color:#3498db;
+    font:14px Arial, sans-serif;
 }
 #properties tr td{
     padding:5px;
@@ -127,7 +138,7 @@ ul {
     padding:0px;
 }
 li{
-    background-color: #336699;
+    background-color: #2c3e50;
     width:260px;
     height:25px;
     margin:1px;
@@ -139,7 +150,7 @@ li a{
     display:block;
 }
 li a:hover{
-    background-color: #113366;
+    background-color: #7f8c8d;
 }
 
 /*** Loader Animation ***/
@@ -187,4 +198,16 @@ li a:hover{
 	0% { -moz-transform: rotate(0deg); opacity: 0.3; }
 	50%  { -moz-transform: rotate(180deg); opacity: 1; }
 	100%   { -moz-transform: rotate(360deg); opacity: 0.3; }
+}
+
+/*** footer ***/
+#footer{
+    display:block;
+    height: 15px;
+    width: 100%;
+    background-color: #bdc3c7;
+    text-align: center;
+    vertical-align: middle;
+    font:10px Arial, sans-serif;
+    color:#ffffff; 
 }
