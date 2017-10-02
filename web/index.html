@@ -27,6 +27,8 @@
         <script src="resources/js/graphdrawing.js" type="text/javascript"></script>
     </head> 
     <body>
+        <div id="header"></div>
+        <div id="contentbody">
         <h1 class="hd1">Oracle PGX - Graph Drawing</h1>
         <table id="headertable">
             <tr id="categorytable"></tr>
@@ -56,7 +58,7 @@
         </table>
         <!-- ダイアログボックス --->
         <div id="nodedialog">
-            <h3><span id="addnodeid"></span>:<span id="addnodelabel"></span></h3>
+            <h3 class="dialogtitle"><span id="addnodeid"></span>:<span id="addnodelabel"></span></h3>
             <ul>
                 <li><a id="addLowerNodes" href="#">下位階層のノードを取得</a></li>
                 <li><a id="addAllNodes" href="#">下位・上位階層のノードを取得</a></li>
@@ -65,7 +67,14 @@
                 <li><a id="close" href="#">キャンセル</a></li>
             </ul>
         </div>
+        <div id="nodecreatedialog">
+            <h3  class="dialogtitle">Create New Node</h3>
+            <table id="createproperties"></table>
+            <button id="createnodesubmit" type="button" value="create">CREATE</button>
+            <button id="creaetnodecancel" type="button" value="cancel">CANCEL</button>
+        </div>
         <div id="mask"></div>
+        </div>
         <div id="footer">Copyright (C) 2017 Nozomu Onuma</div>
     </body>
 </html>

@@ -24,6 +24,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
@@ -173,11 +174,28 @@ public class PgxRestResource {
      * @return an HTTP response with content of the created resource
      */
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response postJson(String content) {
-        //TODO
-        return Response.created(context.getAbsolutePath()).build();
+    @Path("/pgx/createnode")
+    @Consumes("application/json; charset=UTF-8")
+    @Produces("application/json; charset=UTF-8")
+    public String createNode(String newnodejson) throws Exception{
+        outputlog(newnodejson);
+        return gdao.createNode(newnodejson);
     }
-
+    
+    /**
+     * POST method for creating an instance of PgxTestResource
+     * @param content representation for the new resource
+     * @return an HTTP response with content of the created resource
+     */
+    @POST
+    @Path("/pgx/createedge")
+    @Consumes("application/json;charset=UTF-8")
+    @Produces("application/json;charset=UTF-8")
+    //一般化がかなりつらい。。。
+    public String createEdge(String newnode) {
+        String json = "";
+        
+        //TODO
+        return json;
+    }
 }

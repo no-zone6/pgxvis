@@ -61,6 +61,7 @@
                     /*** Sigmaインスタンスに対するイベント設定***/
                         graphins.bind('rightClickNode',rightClickNodeEvent);
                         graphins.bind('clickNode', clickNodeEvent);
+                        graphins.bind('doubleClickStage', doubleClickStageEvent);
                     }else{
                         console.log("Sigma Instance has been already created");
                     }
@@ -96,6 +97,7 @@
         
         function clickNodeEvent(e){
             /*** プロパティテーブルへプロパティを登録 ***/
+            console.log(e.data.captor.clientX, e.data.captor.clientY, e.data.captor.x,e.data.captor.y);
             var nodeid = e.data.node.id;
             $.getJSON(baseurl + "/PgxRest/oraclepgx/graphs/sigma/vertexinfo/"+nodeid, function(){
             }).done(function(json){
@@ -127,6 +129,57 @@
                 $('#nodedialog, #mask').hide();                
             })
         }    
+        
+        function doubleClickStageEvent(e){
+            console.log(e.data.captor.clientX, e.data.captor.clientY, e.data.captor.x,e.data.captor.y);
+            if(!(typeof graphins === "undefined" || graphins ==null)){
+                for(var i in graphsetting.vertex_props){
+                    $('#createproperties').append("<tr><td class='propheader'>"+graphsetting.vertex_props[i].name+"</td><td id=prop_"+graphsetting.vertex_props[i].name+"><input type='text' id=form_"+graphsetting.vertex_props[i].name+"></input></td><?tr>");
+                }            
+                $('#nodecreatedialog').css({
+                    'left':e.data.captor.clientX,
+                    'top':e.data.captor.clientY
+                });
+                $('#mask').fadeTo("slow",0.5);
+                $('#nodecreatedialog').fadeTo("slow",1);     
+            }
+            $('#createnodesubmit').click(function(e1){
+                var newnode = {};
+                for(var i in graphsetting.vertex_props){
+                    var key = "#form_"+graphsetting.vertex_props[i].name;
+                    newnode[graphsetting.vertex_props[i].name] = $(key).val();
+                }
+                console.log(JSON.stringify(newnode));
+                $.ajax({
+                    type:"POST",
+                    dataType:"JSON",
+                    contentType: 'application/json',
+                    url: baseurl + "/PgxRest/oraclepgx/graphs/pgx/createnode/" ,
+                    data: JSON.stringify(newnode)
+                }).done(function(nodedata){
+                    graphins.stopForceAtlas2();    
+                    graphins.graph.addNode({
+                        id:nodedata.id,
+                        label:nodedata.label,
+                        //位置決めがやっぱり問題
+                        x:e.data.captor.x,
+                        y:e.data.captor.y,
+                        size:nodedata.size,
+                        color:nodedata.color
+                    });
+                    graphins.refresh();
+                }).fail(function(xhr, status, error){
+                    console.log(xhr, status, error);
+                });
+
+                $('#createproperties').empty();
+                $('#nodecreatedialog, #mask').hide();     
+            });
+            $('#creaetnodecancel').click(function(e2){
+                $('#createproperties').empty();
+                $('#nodecreatedialog, #mask').hide();                
+            });            
+        }
         
         /**** 初期フロー ***/
         /*** ルートボタンの設定 ***/
@@ -276,4 +329,9 @@
             graphins.refresh();
             $('#nodedialog, #mask').hide();    
         });
+        $('#createEdge').click(function(e){
+            
+        });
+        /*** CANVASイベント ***/
+
     })

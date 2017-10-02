@@ -337,7 +337,6 @@ public class GraphDAO {
                 pgqlstr = pgqlstr + " x."+vertexset.get("name") +",";
             }
             pgqlstr = pgqlstr.substring(0,pgqlstr.length()-1) + " WHERE (x), x.id() = "+ nodeid;
-            System.out.println(pgqlstr);
             
             PgqlResultSet resultSet = graph.queryPgql(pgqlstr);
             for(PgqlResult result : resultSet.getResults()){
@@ -369,6 +368,68 @@ public class GraphDAO {
     public String getRootCategories() throws Exception{
         String json ="";        
         json = JSON.encode(this.ctgmap);
+        return json;
+    }
+    
+    public String createNode(String nodejson) throws Exception{
+        //値の受け渡しは実施できているが、PGXに登録できていない
+        String json ="";
+        Long id = null;
+        try{
+            //IDの最大値を取得
+            PgqlResultSet resultSet = graph.queryPgql("SELECT max(x.id()) WHERE (x)");
+            for(PgqlResult result : resultSet.getResults()){
+                id = result.getLong(0) + 1;
+            }
+            //受け取ったJSONをMAPに変換
+            Map<String,String> map = (Map<String,String>) JSON.decode(nodejson);
+            //VertexBuilder作成
+            GraphChangeSet gcset = graph.createChangeSet();
+            VertexBuilder vbuilder = gcset.addVertex(id);
+            
+            //PGX設定ファイルからvertexの設定を取得し、その設定を参考に値をセットする
+            Map vertex_props = ppro.getVertex_props();
+            for(int i = 0 ; i < vertex_props.size() ; i++){
+                Map<String, String> vertexset = new HashMap();
+                vertexset = (Map)vertex_props.get(i);
+                //値が入っているものに限りプロパティをセットする
+                switch (vertexset.get("type")) {
+                    case "integer":
+                        if((map.get(vertexset.get("name"))!=null) && !(map.get(vertexset.get("name")).isEmpty())){
+                            outputlog(map.get(vertexset.get("name")) + ":" + vertexset.get("name"));
+                            vbuilder.setProperty(vertexset.get("name"), Integer.parseInt(map.get(vertexset.get("name"))));                            
+                        }
+                        break;
+                    case "float":
+                        if((map.get(vertexset.get("name"))!=null) && !(map.get(vertexset.get("name")).isEmpty())){
+                            outputlog(map.get(vertexset.get("name")) + ":" + vertexset.get("name"));
+                            vbuilder.setProperty(vertexset.get("name"), Float.parseFloat(map.get(vertexset.get("name"))));
+                        }
+                        break;
+                    default:
+                        if((map.get(vertexset.get("name"))!=null) && !(map.get(vertexset.get("name")).isEmpty())){
+                            outputlog(map.get(vertexset.get("name")) + ":" + vertexset.get("name"));
+                            vbuilder.setProperty(vertexset.get("name"), map.get(vertexset.get("name")));
+                        }
+                        break;
+                }
+            }
+            vbuilder.build();
+            //戻り値となるJSON作成
+            SigmaNodePropertyBean node = new SigmaNodePropertyBean();
+            node.setId(id);
+            node.setLabel(map.get("name"));
+            node.setColor(this.getColorHex(map.get("type")));
+            node.setX(0);
+            node.setY(0);
+            node.setSize(2);
+            
+            json = JSON.encode(node);
+            
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        
         return json;
     }
     
