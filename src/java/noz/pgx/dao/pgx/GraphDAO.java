@@ -564,9 +564,9 @@ public class GraphDAO {
         }else if(type.equals(ctgmap.get(3))){
                 colorhex = "#e67e22";            
         }else if(type.equals(ctgmap.get(4))){
-                colorhex = "#2ecc71";            
-        }else if(type.equals(ctgmap.get(5))){
                 colorhex = "#e74c3c";            
+        }else if(type.equals(ctgmap.get(5))){
+                colorhex = "#2ecc71";            
         }else {
                 colorhex = "#8f8f8f";
         }

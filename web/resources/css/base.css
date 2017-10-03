@@ -11,6 +11,7 @@
 */
 body{
     margin:0px;
+    width:100%;
 }
 
 
@@ -48,17 +49,17 @@ body{
 }
 #ctg3{
     background: #e67e22;
-}
+} 
 #ctg4{
-    background: #2ecc71;
+    background: #e74c3c;
 }
 #ctg5{
-    background: #e74c3c;
+    background:#2ecc71;
 }
 .rootbutton{
     margin: 1px;
     color: #555555;
-    padding: 20px 90px;
+    padding: 20px 80px;
     font: 18px/17px Arial, sans-serif;
     border:none;
     transition-duration: 0.4s;

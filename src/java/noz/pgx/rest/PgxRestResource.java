@@ -24,7 +24,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
@@ -46,8 +45,6 @@ public class PgxRestResource {
     private UriInfo context;
     private GraphDAO gdao;
     private PgxProps ppro;
-    private int graphdepth = 3;
-    private int additionaldepth = 2;
     //環境に合わせて設定
     //PGX接続用JSON設定ファイル
     private String jsonfilepath = "";
@@ -59,7 +56,7 @@ public class PgxRestResource {
     public PgxRestResource() throws Exception{
         Properties properties = new Properties();
         try{
-            InputStream is = new FileInputStream("pgxconfig\\pgxrest.properties");
+            InputStream is = new FileInputStream("pgxrest.properties");
             properties.load(is);
             is.close();
             
