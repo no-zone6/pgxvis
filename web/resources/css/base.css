@@ -59,7 +59,8 @@ body{
 .rootbutton{
     margin: 1px;
     color: #555555;
-    padding: 20px 80px;
+    padding: 20px 20px;
+    width: 250px;
     font: 18px/17px Arial, sans-serif;
     border:none;
     transition-duration: 0.4s;
@@ -139,7 +140,7 @@ label {
     top:0;
     z-index:2;
     width:262px;
-    height:179px;
+    height:182px;
     padding:0px;
     box-shadow:0 0 6px #000;
     border-radius: 5px;
