@@ -50,18 +50,16 @@ public class PgxRestResource {
     private int additionaldepth = 2;
     //環境に合わせて設定
     //PGX接続用JSON設定ファイル
-    private String jsonfilepath = "C:\\Users\\nonuma\\PgxRest\\web\\resources\\pgxsetting.json";
+    private String jsonfilepath = "";
     //PGXサーバのURL
-    private String pgxurl = "http://192.168.56.122:7007";
+    private String pgxurl = "";
     /**
      * Creates a new instance of PgxTestsResource
      */
     public PgxRestResource() throws Exception{
-        /*
-        外部からプロパティを読みたいが、これをやるとおかしくなる。。。
         Properties properties = new Properties();
         try{
-            InputStream is = new FileInputStream("..\\..\\PgxRest\\web\\WEB-INF\\classes\\pgxrest.properties");
+            InputStream is = new FileInputStream("pgxconfig\\pgxrest.properties");
             properties.load(is);
             is.close();
             
@@ -70,7 +68,7 @@ public class PgxRestResource {
         }catch(Exception e){
             System.out.println(e);
         }
-        */      
+        
         gdao = new GraphDAO(pgxurl,jsonfilepath);
         ppro = JSON.decode(new FileReader(jsonfilepath),PgxProps.class);
     }
