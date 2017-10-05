@@ -552,13 +552,13 @@ public class GraphDAO {
         }        
         return list;
     }
-    
+   
     private String getColorHex(String type){
         String colorhex = "#8f8f8f";
         if(type.equals(ctgmap.get(0))){
-                colorhex = "#1abc9c";            
-        }else if(type.equals(ctgmap.get(1))){
                 colorhex = "#3498db";            
+        }else if(type.equals(ctgmap.get(1))){
+                colorhex = "#1abc9c";            
         }else if(type.equals(ctgmap.get(2))){
                 colorhex = "#f1c40f";            
         }else if(type.equals(ctgmap.get(3))){
@@ -566,7 +566,7 @@ public class GraphDAO {
         }else if(type.equals(ctgmap.get(4))){
                 colorhex = "#e74c3c";            
         }else if(type.equals(ctgmap.get(5))){
-                colorhex = "#2ecc71";            
+                colorhex = "#cc33ff";            
         }else {
                 colorhex = "#8f8f8f";
         }

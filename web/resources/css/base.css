@@ -39,10 +39,10 @@ body{
     border-color: #000
 }
 #ctg0{
-    background: #1abc9c;
+    background: #3498db;
 }
 #ctg1{
-    background: #3498db;
+    background: #1abc9c;
 }
 #ctg2{
     background: #f1c40f;
@@ -54,7 +54,7 @@ body{
     background: #e74c3c;
 }
 #ctg5{
-    background:#2ecc71;
+    background: #cc33ff;
 }
 .rootbutton{
     margin: 1px;
