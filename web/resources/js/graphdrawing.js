@@ -42,7 +42,7 @@
                     createPropertiestable();
                     /*** Sigmaインスタンスの作成（ない場合）***/
                     if(typeof graphins === "undefined" || graphins ==null){
-                        console.log("creat new Sigma Instance");
+                        message_header("creat new Sigma Instance");
                         graphins = new sigma({
                             renderers:[
                                 {
@@ -63,7 +63,7 @@
                         graphins.bind('clickNode', clickNodeEvent);
                         graphins.bind('doubleClickStage', doubleClickStageEvent);
                     }else{
-                        console.log("Sigma Instance has been already created");
+                        message_header("Sigma Instance has been already created");
                     }
                     /*** サーバへの問い合わせ ***/         
                     var category = $(this).text().toLowerCase();
@@ -79,11 +79,11 @@
                             graphins.graph.read(graphdata);
                     /*** sigmaインスタンスへのForceAtlas登録（ノード配置） ***/
                             graphins.startForceAtlas2({
-                                gravity:10,
-                                scalingRatio:10,
-                                slowDown:10
+                                gravity:100,
+                                scalingRatio:40,
+                                slowDown:100
                             });
-                            setTimeout(function(){ graphins.stopForceAtlas2(); }, 10000);
+                            setTimeout(function(){ graphins.stopForceAtlas2(); }, 8000);
 
                             graphins.refresh();
                             $('#load_container, #load_circle, #load_comment').css('display','none');
@@ -97,7 +97,6 @@
         
         function clickNodeEvent(e){
             /*** プロパティテーブルへプロパティを登録 ***/
-            console.log(e.data.captor.clientX, e.data.captor.clientY, e.data.captor.x,e.data.captor.y);
             var nodeid = e.data.node.id;
             $.getJSON(baseurl + "/PgxRest/oraclepgx/graphs/sigma/vertexinfo/"+nodeid, function(){
             }).done(function(json){
@@ -111,7 +110,7 @@
         function rightClickNodeEvent(e){
             /*** （ToDO)子ノードの取得、とかしたい ***/
             eventdata = e.data;
-            console.log(e.type, e.data.node.label, e.data.node.id, e.data.captor.clientX);
+            message_header(e.type, e.data.node.label, e.data.node.id, e.data.captor.clientX);
             /*** ダイアログ表示 ***/
             $('#addnodeid').empty();
             $('#addnodelabel').empty();
@@ -131,7 +130,7 @@
         }    
         
         function doubleClickStageEvent(e){
-            console.log(e.data.captor.clientX, e.data.captor.clientY, e.data.captor.x,e.data.captor.y);
+            message_header(e.data.captor.clientX, e.data.captor.clientY, e.data.captor.x,e.data.captor.y);
             if(!(typeof graphins === "undefined" || graphins ==null)){
                 for(var i in graphsetting.vertex_props){
                     $('#createproperties').append("<tr><td class='propheader'>"+graphsetting.vertex_props[i].name+"</td><td id=prop_"+graphsetting.vertex_props[i].name+"><input type='text' id=form_"+graphsetting.vertex_props[i].name+"></input></td><?tr>");
@@ -149,7 +148,7 @@
                     var key = "#form_"+graphsetting.vertex_props[i].name;
                     newnode[graphsetting.vertex_props[i].name] = $(key).val();
                 }
-                console.log(JSON.stringify(newnode));
+                message_header(JSON.stringify(newnode));
                 $.ajax({
                     type:"POST",
                     dataType:"JSON",
@@ -169,7 +168,7 @@
                     });
                     graphins.refresh();
                 }).fail(function(xhr, status, error){
-                    console.log(xhr, status, error);
+                    message_header(xhr, status, error);
                 });
 
                 $('#createproperties').empty();
@@ -191,7 +190,7 @@
         /*** ノードクリックイベント対応用関数 ***/
         var eventdata;
         /*** 右クリック時にブラウザのコンテキストメニューが出ないようにする +***/
-        /*
+        
         if (document.addEventListener) {
             document.addEventListener('contextmenu', function(e) {
               //my custom functionality on right click
@@ -203,7 +202,7 @@
                 window.event.returnValue = false;
             });
         };
-        */
+        
         /*** 右クリックメニューにイベントをバインド ***/
         $('#addLowerNodes').click(function(e){
             $('#nodedialog, #mask').hide();
@@ -218,7 +217,7 @@
                     for(var i in graphdata.nodes){
                         if(!(graphins.graph.nodes(graphdata.nodes[i].id))){
                             //ノードIDの存在判定ロジックがおかしい
-                            console.log("add node " + graphdata.nodes[i].label + " to graphinstance");
+                            message_header("add node " + graphdata.nodes[i].label + " to graphinstance");
                             graphins.graph.addNode({
                                 id:graphdata.nodes[i].id,
                                 label:graphdata.nodes[i].label,
@@ -229,21 +228,21 @@
                                 color:graphdata.nodes[i].color
                             });
                         }else{
-                            console.log("Node ID:" + graphdata.nodes[i].id + " has already existed. ");
+                            message_header("Node ID:" + graphdata.nodes[i].id + " has already existed. ");
                         }
                     }
                     //エッジデータの追加
                     for(var k in graphdata.edges){
                         if(!(graphins.graph.edges(graphdata.edges[k].id))){
                             //エッジIDの存在判定ロジックがおかしい
-                            console.log("add edge " + graphdata.edges[k].id + " to graphinstance");
+                            message_header("add edge " + graphdata.edges[k].id + " to graphinstance");
                             graphins.graph.addEdge({
                                 id:graphdata.edges[k].id,
                                 source:graphdata.edges[k].source,
                                 target:graphdata.edges[k].target
                             })
                         }else{
-                            console.log("Edge ID:" + graphdata.edges[k].id + " has already existed. ");
+                            message_header("Edge ID:" + graphdata.edges[k].id + " has already existed. ");
                         }
                     }
                     graphins.startForceAtlas2();
@@ -263,7 +262,7 @@
                     //ノードデータの追加
                     for(var i in graphdata.nodes){
                         if(!(graphins.graph.nodes(graphdata.nodes[i].id))){
-                            console.log("add node " + graphdata.nodes[i].label + " to graphinstance");
+                            message_header("add node " + graphdata.nodes[i].label + " to graphinstance");
                             graphins.graph.addNode({
                                 id:graphdata.nodes[i].id,
                                 label:graphdata.nodes[i].label,
@@ -274,20 +273,20 @@
                                 color:graphdata.nodes[i].color
                             });
                         }else{
-                            console.log("Node ID:" + graphdata.nodes[i].id + " has already existed. ");
+                            message_header("Node ID:" + graphdata.nodes[i].id + " has already existed. ");
                         }
                     }
                     //エッジデータの追加
                     for(var k in graphdata.edges){
                         if(!(graphins.graph.edges(graphdata.edges[k].id))){
-                            console.log("add edge " + graphdata.edges[k].id + " to graphinstance");
+                            message_header("add edge " + graphdata.edges[k].id + " to graphinstance");
                             graphins.graph.addEdge({
                                 id:graphdata.edges[k].id,
                                 source:graphdata.edges[k].source,
                                 target:graphdata.edges[k].target
                             })
                         }else{
-                            console.log("Edge ID:" + graphdata.edges[k].id + " has already existed. ");
+                            message_header("Edge ID:" + graphdata.edges[k].id + " has already existed. ");
                         }
                     }
                     graphins.startForceAtlas2();
@@ -312,11 +311,11 @@
                     graphins.graph.read(graphdata);
             /*** sigmaインスタンスへのForceAtlas登録（ノード配置） ***/
                     graphins.startForceAtlas2({
-                        gravity:10,
+                        gravity:100,
                         scalingRatio:10,
-                        slowDown:10
+                        slowDown:100
                     });
-                    setTimeout(function(){ graphins.stopForceAtlas2(); }, 10000);
+                    setTimeout(function(){ graphins.stopForceAtlas2(); }, 8000);
 
                     graphins.refresh();
                     $('#load_container, #load_circle, #load_comment').css('display','none');
@@ -333,5 +332,15 @@
             
         });
         /*** CANVASイベント ***/
-
+        
+        function message_header(message){
+            $('#header_message').empty();
+            $('#header_message').append(message);
+            if(message.slice(1,5) == "ERROR"){
+                $('#header').css('color','red');
+            }else{
+                $('#header').css('color','#ffffff');                
+            }
+        }
+        
     })
