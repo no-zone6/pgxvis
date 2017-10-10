@@ -157,11 +157,12 @@ public class GraphDAO {
         json = JSON.encode(map);
        
         //JSON内容確認用ファイル出力
+        /*
         File file = new File("D:\\test\\output.json");
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
         pw.print(json);
         pw.close();
-        
+        */
         return json;
     }
     
