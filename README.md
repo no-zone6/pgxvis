@@ -5,40 +5,51 @@ version 0.1
 last update 2017/9/27
 
 
-�P�D���p�O�� 
+１．利用前提 
 
-�@1-1. PGX
+　1-1. PGX
 
-�@�@�Evertex_props�Ɂuname�v�v���p�e�B���ݒ肳��Ă���B->name�v���p�e�B���A��ʏ�̃m�[�h�̖��O�ɂȂ�B    
-�@�@�E�ŏ��ɃA�N�Z�X���郋�[�g�m�[�h���w�肷��K�v������B    
-�@�@�E���[�g�m�[�h��
-�@�@�@- �uisroot�v�v���p�e�B��ݒ肵�A�l�Ƃ��āu1�v����������B      
-�@�@�@- �utype�v�v���p�e�B��ݒ肵�A�m�[�h�̎�ʂ�o�^����B ->���[�g�m�[�h��type�v���p�e�B���A��ʏ㕔�̃{�^���̖��O�ɂȂ�B      
-�@�@�@�K�v������B    
-�@�@�E���[�g�m�[�h�͍ő�U�܂Ŏw��\�B�V�ȏ�w�肵���ꍇ�́A�{�^���z�F�ɂ�镪�ނ��Ȃ���Ȃ��B    
-�@�@�E���[�g�m�[�h�ȊO�̃m�[�h��type�v���p�e�B�̒l��ݒ肷�邱�Ƃ͕K�{�ł͂Ȃ����A���[�g�m�[�h��type�v���p�e�B�̒l�Ƃ��낦�邱�ƂŁA��ʏ�̃m�[�h�̐F���{�^���̐F�ɂ��낦����B �@
+　　・vertex_propsに「name」プロパティが設定されている。->nameプロパティが、画面上のノードの名前になる。    
+　　・最初にアクセスするルートノードを指定する必要がある。    
+　　・ルートノードは
+　　　- 「isroot」プロパティを設定し、値として「1」を持たせる。      
+　　　- 「type」プロパティを設定し、ノードの種別を登録する。 ->ルートノードのtypeプロパティが、画面上部のボタンの名前になる。      
+　　　必要がある。    
+　　・ルートノードは最大６個まで指定可能。７個以上指定した場合は、ボタン配色による分類がなされない。    
+　　・ルートノード以外のノードにtypeプロパティの値を設定することは必須ではないが、ルートノードのtypeプロパティの値とそろえることで、画面上のノードの色がボタンの色にそろえられる。 　
 
-�@1-2. �T�[�o�\��    
-�@�@�EPGX�A�N�Z�X�p�ݒ�JSON�t�@�C�����A�upgxsetting.json�v�̃t�@�C�����ō쐻���Aweb/resources�t�H���_�ɔz�u����
+　1-2. サーバ構成    
+　　・PGXアクセス用設定JSONファイルを、「pgxsetting.json」のファイル名で作製し、web/resourcesフォルダに配置する
 
-�Q�D���p���@ 
+２．利用方法 
     
-�@2-1. ���̂Ƃ���̊m���ȗ��p���@  
+　2-1. 今のところの確実な利用方法  
 
-�@�@�EPGX���T�[�o���[�h�ŋN��    
-�@�@�Enetbeans��̃v���W�F�N�g�ɁAGithub����{���|�W�g���̃N���[�����쐻    
-�@�@�Eweb�y�[�W/resources�t�H���_��pgxsetting.json�t�@�C����z�u    
-�@�@�EPgxRestResource.java���̃����o�ϐ��upgxurl�v��PGX�T�[�o��URL���L�q    
-�@�@�E�v���W�F�N�g�����s    
+　　・PGXをサーバモードで起動    
+　　・netbeans上のプロジェクトに、Githubから本リポジトリのクローンを作製    
+　　・webページ/resourcesフォルダにpgxsetting.jsonファイルを配置    
+　　・PgxRestResource.java内のメンバ変数「pgxurl」にPGXサーバのURLを記述    
+　　・プロジェクトを実行    
     
-    
+  2-2. アプリケーションのみ稼動させる方法  
 
-�R�DToDo     
+　　・PGXをサーバモードで起動    
+　　・Glassfishサーバ（4.1)をインストールし、起動
+  　　　　・インストールディレクトリ配下のbinフォルダからコマンドプロンプトを開き、asadmin start-domainで起動
+  　・本リポジトリのdistフォルダにある「PgxRest.war」ファイルをGlassfishにデプロイ
+        ・localhost:4848にアクセス
+        ・左側のペインから「Application」をクリックし「deploy」をクリック
+        ・CDIのチェックボックスをはずし、それ以外はデフォルトのまま
+　　・pgxrest.propertiesファイルのプロパティとして「pgxurl」にPGXサーバのURLを記述 
+  　・同じく「pgxjson」にPGX設定用jsonファイルの名前とパスを記述
+　　・Glassfishのデフォルトドメイン（domain1）配下の「config」フォルダに「pgxrest.properties」ファイルを配置
+  　・pgxrest.propertiesファイル内に記載された場所にPGX設定用JSONファイルを配置
+　　・ブラウザからlocalhost:8080/PgxRest/index.html二アクセス
+  　     ・接続テストとしてlocalhost:8080/PgxRest/oraclepgx/graphs二アクセスしてJSONが帰ってくればOK
 
-�@�E����������ƊȒP�ȃC���X�g�[�����@�̎���    
-�@�EPGX�T�[�oURL�̐ݒ�̃v���p�e�B�t�@�C����    
-�@�E�E�N���b�N�@�\�̊g�[    
-�@�ELog4J�Ή�    
-�@�E���̑������s�s�������镔���̉���    
-�@�@�E�N���[�Y����
-�@�@�E�G���[�n���h�����O�@��
+３．ToDo     
+
+　・右クリック機能の拡充    
+　・Log4J対応     
+　　・クローズ処理
+　　・エラーハンドリング　等
