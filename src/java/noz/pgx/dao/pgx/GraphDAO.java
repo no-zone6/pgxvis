@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import oracle.pgx.api.*;
 import oracle.pgx.config.*;
 import net.arnx.jsonic.JSON;
@@ -38,7 +39,7 @@ public class GraphDAO {
     private PgxSession gsession;
     private final PgxGraph graph;
     private final PgxProps ppro;
-    private HashMap ctgmap;
+    private final HashMap ctgmap;
     
     public GraphDAO(String pgxserver, String jsonfilepath) throws Exception{
         outputlog(":GraphDAO has been constructed.");
@@ -60,7 +61,7 @@ public class GraphDAO {
                 map.put(i,result.getString(0) );
                 i++;
             }
-        }catch(Exception e){
+        }catch(InterruptedException | ExecutionException e){
             System.out.println(e);            
         }
         this.ctgmap = map;
@@ -86,8 +87,6 @@ public class GraphDAO {
     public String getGraphJsonForSigma(Long rootnodeid, int depth) throws Exception{
         //本命
         outputlog(":get Graph data for Sigma JSON");
-        
-        String json = "";
         //Sigma似合わせたJSON出力用HashMap
         HashMap map = new HashMap<String,List>();
         //ループ処理用リストの雛形
@@ -154,7 +153,7 @@ public class GraphDAO {
             System.out.println(e);            
         }
         //JSONへの変換
-        json = JSON.encode(map);
+        String json = JSON.encode(map);
        
         //JSON内容確認用ファイル出力
         /*
@@ -168,7 +167,6 @@ public class GraphDAO {
     
     public String getAdditionalGraphJsonForSigma(Long rootnodeid, int depth) throws Exception{
         outputlog(":get additional Graph data for Sigma JSON. root node id is " + rootnodeid + "  depth is " + depth);
-        String json = "";
         //Sigma似合わせたJSON出力用HashMap
         HashMap map = new HashMap<String,List>();
         //ループ処理用リストの雛形
@@ -236,7 +234,7 @@ public class GraphDAO {
         }
         
         //JSONへの変換
-        json = JSON.encode(map);
+        String json = JSON.encode(map);
         
         //JSON内容確認用ファイル出力
         File file = new File("D:\\test\\output_add.json");
@@ -319,11 +317,12 @@ public class GraphDAO {
         json = JSON.encode(map);
         
         //JSON内容確認用ファイル出力
+        /*
         File file = new File("D:\\test\\output_add.json");
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
         pw.print(json);
         pw.close();
-
+        */
         return json;
     }
     
@@ -342,8 +341,7 @@ public class GraphDAO {
             PgqlResultSet resultSet = graph.queryPgql(pgqlstr);
             for(PgqlResult result : resultSet.getResults()){
                 for(int k =0 ; k < vertex_props.size() ; k++){
-                    Map<String, String> vertexset = new HashMap();
-                    vertexset = (Map)vertex_props.get(k);
+                    Map<String, String> vertexset = (Map)vertex_props.get(k);
                     json = json + "\"" + vertexset.get("name") + "\":";
                     switch (vertexset.get("type")) {
                         case "integer":
@@ -367,8 +365,7 @@ public class GraphDAO {
     }
     
     public String getRootCategories() throws Exception{
-        String json ="";        
-        json = JSON.encode(this.ctgmap);
+        String json = JSON.encode(this.ctgmap);
         return json;
     }
     
@@ -391,8 +388,7 @@ public class GraphDAO {
             //PGX設定ファイルからvertexの設定を取得し、その設定を参考に値をセットする
             Map vertex_props = ppro.getVertex_props();
             for(int i = 0 ; i < vertex_props.size() ; i++){
-                Map<String, String> vertexset = new HashMap();
-                vertexset = (Map)vertex_props.get(i);
+                Map<String, String> vertexset = (Map)vertex_props.get(i);
                 //値が入っているものに限りプロパティをセットする
                 switch (vertexset.get("type")) {
                     case "integer":
@@ -568,8 +564,6 @@ public class GraphDAO {
                 colorhex = "#e74c3c";            
         }else if(type.equals(ctgmap.get(5))){
                 colorhex = "#cc33ff";            
-        }else {
-                colorhex = "#8f8f8f";
         }
         
         return colorhex;
