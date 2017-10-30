@@ -17,6 +17,8 @@ import javax.ws.rs.core.Application;
 /**
  *
  * @author Nozomu Onuma
+ * 
+ * 
  */
 @javax.ws.rs.ApplicationPath("oraclepgx")
 public class ApplicationConfig extends Application {
