@@ -1,8 +1,8 @@
-# pgx-vis
+# pgxvis
 
 Nozomu Onuma 
 version 0.1 
-last update 2017/9/27
+last update 2017/10/30
 
 
 １．利用前提 
