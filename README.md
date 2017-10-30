@@ -4,7 +4,6 @@ Nozomu Onuma
 version 0.1 
 last update 2017/10/30
 
-
 １．利用前提 
 
 　1-1. PGX
