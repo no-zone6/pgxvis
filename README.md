@@ -35,7 +35,7 @@ last update 2017/10/30
 　　・PGXをサーバモードで起動    
 　　・Glassfishサーバ（4.1)をインストールし、起動    
   　　　　・インストールディレクトリ配下のbinフォルダからコマンドプロンプトを開き、asadmin start-domainで起動    
-  　・本リポジトリのdistフォルダにある「PgxRest.war」ファイルをGlassfishにデプロイ    
+  　・本リポジトリのtestフォルダにある「PgxRest.war」ファイルをGlassfishにデプロイ    
         ・localhost:4848にアクセス    
         ・左側のペインから「Application」をクリックし「deploy」をクリック    
         ・CDIのチェックボックスをはずし、それ以外はデフォルトのまま    
@@ -44,4 +44,4 @@ last update 2017/10/30
 　　・Glassfishのデフォルトドメイン（domain1）配下の「config」フォルダに「pgxrest.properties」ファイルを配置    
   　・pgxrest.propertiesファイル内に記載された場所にPGX設定用JSONファイルを配置    
 　　・ブラウザからlocalhost:8080/PgxRest/index.html二アクセス    
-  　     ・接続テストとしてlocalhost:8080/PgxRest/oraclepgx/graphs二アクセスしてJSONが帰ってくればOK    
+  　     ・接続テストとしてlocalhost:8080/PgxRest/oraclepgx/graphsにアクセスしてJSONが帰ってくればOK    
