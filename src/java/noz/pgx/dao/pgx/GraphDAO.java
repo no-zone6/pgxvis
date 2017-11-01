@@ -65,7 +65,6 @@ public class GraphDAO {
             System.out.println(e);            
         }
         this.ctgmap = map;
-        //クローズ処理をどこで書けばいいかなやみどころ。
     }
     
     public Long getGraphRootNodeId(String graphtype){
