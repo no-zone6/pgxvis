@@ -5,6 +5,7 @@
  * File Name       : graphdrawing.js
  * Encoding        : UTF-8
  * Creation Date   : 2017/09/26
+ * Last Update     : 2017/11/02
 
  * This source code or any portion thereof must not be
  * reproduced or used in any manner whatsoever.
